@@ -1,11 +1,17 @@
 # -*- coding: utf-8 -*-
 
+'''由于PCDuino没有提供onewire库，配电箱温度、以及房间温度暂时不支持'''
+'''power monitor with PCDuino V2'''
+
+
 import minimalmodbus
 from socket import *
 import time
 import select
 import requests
 import json
+
+version_str='1.0'
 
 api='http://api.heclouds.com/devices/1071322/datapoints?type=3'
 api_key='YPjeEHaQKQA0aholzHpROJI4CCc='
@@ -20,20 +26,20 @@ co2='CO2'
 prate='P_Rate'
 ds18b20_id='a' #id
 
-'''
-def sampleTempInside()
+
+def sampleTempInside(id): #ds18b20 id
     '采集配电箱内部温度'
     t=2
     
-def sampleDHT22()
+def sampleDHT22():
     '采集房间温度、湿度'
     t=20
     h=98
-'''
+
 
 def samplingPower():
     '采集电量、配电箱内部温度以及房间的温度、湿度值'
-    powerMeter = minimalmodbus.Instrument('/dev/ttyUSB0',1)
+    powerMeter = minimalmodbus.Instrument('/dev/ttyS1',1)
     powerMeter.serial.baudrate=4800
     powerMeter.serial.timeout=50
     powerInfo = powerMeter.read_registers(72,6)
@@ -53,7 +59,7 @@ def samplingPower():
     print  '功率因素： \t', values[5]
     print " "    
 
-'''
+
 def postData(v):
     '发送采集到的数据到指定服务商'
     payload={voltage:v[0], amp:v[1], watt:[2], kwh:v[3], co2:v[4], prate:v[5]}
@@ -65,7 +71,7 @@ def postData(v):
     #print r.text
     if r.status_code != 200 :
         print r.text
-'''
+
 
 if __name__=='__main__':
     while (True):
