@@ -38,14 +38,20 @@ def sampleDHT22():
     h=98
     return t,h
 
+def clearKwh(slave):
+    pwrMeter=minimalmodbus.Instrument('/dev/ttyS1',slave):
+    pwrMeter.serial.baudrate=4800
+    pwrMeter.serial.timeout=10
+    pwrMeter.write_registers(12,[0,0])
+
 
 def samplingPower(slave,register):
     '采集电量、配电箱内部温度以及房间的温度、湿度值'
     powerMeter = minimalmodbus.Instrument('/dev/ttyS1',slave)
     powerMeter.serial.baudrate=4800
-    powerMeter.serial.timeout=50
+    powerMeter.serial.timeout=10
 
-    print powerMeter
+    #print powerMeter
 
     powerInfo = powerMeter.read_registers(register,6)
 
@@ -56,7 +62,6 @@ def samplingPower(slave,register):
     hi=powerInfo[3]
     low=powerInfo[4]
     hi<<8
-    	
     values[3]=round( (hi+low) /3200.0,4)    
 
     values[4]=powerInfo[5]/1000.0
