@@ -30,19 +30,21 @@ ds18b20_id='a' #id
 def sampleTempInside(id): #ds18b20 id
     '采集配电箱内部温度'
     t=2
+    return t
     
 def sampleDHT22():
     '采集房间温度、湿度'
     t=20
     h=98
+    return t,h
 
 
-def samplingPower():
+def samplingPower(slave,register):
     '采集电量、配电箱内部温度以及房间的温度、湿度值'
-    powerMeter = minimalmodbus.Instrument('/dev/ttyS1',1)
+    powerMeter = minimalmodbus.Instrument('/dev/ttyS1',slave)
     powerMeter.serial.baudrate=4800
     powerMeter.serial.timeout=50
-    powerInfo = powerMeter.read_registers(72,6)
+    powerInfo = powerMeter.read_registers(register,6)
     #需要判断返回是否正常
     values[0]=powerInfo[0] / 100.0
     values[1]=round(powerInfo[1]/ 1000.0,2)
@@ -75,6 +77,6 @@ def postData(v):
 
 if __name__=='__main__':
     while (True):
-        samplingPower()
+        samplingPower(1,72)
         time.sleep(1)
         #postData()
