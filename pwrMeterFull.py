@@ -11,7 +11,7 @@ import select
 import requests
 import json
 
-version_str='1.0'
+version_str='1.1'
 
 api='http://api.heclouds.com/devices/1071322/datapoints?type=3'
 api_key='YPjeEHaQKQA0aholzHpROJI4CCc='
@@ -39,7 +39,7 @@ def sampleDHT22():
     return t,h
 
 def clearKwh(slave):
-    pwrMeter=minimalmodbus.Instrument('/dev/ttyS1',slave):
+    pwrMeter=minimalmodbus.Instrument('/dev/ttyS1',slave)
     pwrMeter.serial.baudrate=4800
     pwrMeter.serial.timeout=10
     pwrMeter.write_registers(12,[0,0])
@@ -53,42 +53,52 @@ def samplingPower(slave,register):
 
     #print powerMeter
 
-    powerInfo = powerMeter.read_registers(register,6)
+    try:	
+    	    powerInfo = powerMeter.read_registers(register,6)
 
-    #需要判断返回是否正常
-    values[0]=powerInfo[0] / 100.0
-    values[1]=round(powerInfo[1]/ 1000.0,2)
-    values[2]=powerInfo[2]/ 1.0
-    hi=powerInfo[3]
-    low=powerInfo[4]
-    hi<<8
-    values[3]=round( (hi+low) /3200.0,4)    
-
-    values[4]=powerInfo[5]/1000.0
-    
-    print  '电压:     \t', values[0]
-    print  '电流:     \t', values[1]
-    print  '有功功率:  \t', values[2]
-    print  '电能:     \t', values[3]
-    print  '功率因素： \t', values[4]
-    print " "    
+	    #需要判断返回是否正常
+	    values[0]=powerInfo[0] / 100.0
+	    values[1]=round(powerInfo[1]/ 1000.0,2)
+	    values[2]=powerInfo[2]/ 1.0
+	    hi=powerInfo[3]
+	    low=powerInfo[4]
+	    hi<<8
+	    values[3]=round( (hi+low) /3200.0,4)    
+	
+	    values[4]=powerInfo[5]/1000.0
+	    '''
+	    print  '电压:     \t', values[0]
+	    print  '电流:     \t', values[1]
+	    print  '有功功率:  \t', values[2]
+	    print  '电能:     \t', values[3]
+	    print  '功率因素： \t', values[4]
+    	    print " "    
+            '''
+    except IOError:
+    	   print 'failed to read from instrument'
+    except ValueError:
+           print 'instrument response is invalid'
 
 
 def postData(v):
     '发送采集到的数据到指定服务商'
-    payload={voltage:v[0], amp:v[1], watt:[2], kwh:v[3], prate:v[4]}
+    payload={voltage:v[0], amp:v[1], watt:v[2], kwh:v[3], prate:v[4]}
     _data=json.dumps(payload)
     _headers={'api-key':api_key}
-    r=requests.post(api, _data, headers=_headers)
 
-    #print _data
-    #print r.text
-    if r.status_code != 200 :
-        print r.text
-
+    try:
+    	r=requests.post(api, _data, headers=_headers)
+    	
+    	#print _data
+    	#print r.text
+    	if r.status_code != 200 :
+        	print 'failed to post data to onenet server'
+        	print r.text
+    except requests.ConnectionError, e:
+	print e    	
 
 if __name__=='__main__':
     while (True):
         samplingPower(1,72)
-        time.sleep(1)
-        #postData()
+        postData(values)
+        time.sleep(2)

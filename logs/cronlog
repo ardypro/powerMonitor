@@ -1,0 +1,21 @@
+Module                  Size  Used by
+sw_interrupt            2424  0 
+gpio                    4509  0 
+pwm                     5050  0 
+adc                     1703  0 
+hardwarelib             1551  4 sw_interrupt,gpio,pwm,adc
+g_ether                48111  0 
+sw_usb_udc             21559  0 
+udc_core                5329  2 g_ether,sw_usb_udc
+rt5370sta             616973  0 
+8192cu                537008  0 
+mali_drm                2087  1 
+drm                   156992  2 mali_drm
+mali                   93460  0 
+disp_ump                 823  0 
+ump                    43938  4 mali,disp_ump
+beginning...
+[23506, 4670, 1072, 0, 54976, 976]
+[23453, 8208, 1890, 0, 54976, 984]
+[23494, 5261, 1225, 0, 55008, 995]
+[23477, 6551, 1532, 0, 55008, 999]
