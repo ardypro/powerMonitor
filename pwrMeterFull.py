@@ -13,6 +13,8 @@ import json
 
 version_str='1.1'
 
+lwapi='http://www.lewei50.com/api/v1/gateway/updatesensors/02'
+lwapi_key='2c2a9948d4c049c18560ddbfb46930d8'
 api='http://api.heclouds.com/devices/1071322/datapoints?type=3'
 api_key='YPjeEHaQKQA0aholzHpROJI4CCc='
 values=[0,0,0,0,0,0,0,0] #对应电压、电流、有功功率、总电量、功率因素、配电箱内部温度、房间温度、房间湿度
@@ -79,6 +81,28 @@ def samplingPower(slave,register):
     except ValueError:
            print 'instrument response is invalid'
 
+def postDataToLewei(v,a,w,k,p):
+	_data='['
+	_data=_data+'{"Name":"v1","Value":"'+ str(v) +'"},'
+	_data=_data+'{"Name":"a1","Value":"'+ str(a) +'"},'
+	_data=_data+'{"Name":"w1","Value":"'+ str(w) +'"},'
+	_data=_data+'{"Name":"kw","Value":"'+ str(k) +'"},'
+	_data=_data+'{"Name":"pf","Value":"'+ str(p) +'"}'
+	_data=_data+']'
+
+	#_data=json.dumps(payload)
+	_headers={'userkey':lwapi_key}
+	try:
+		r=requests.post(lwapi, _data, headers=_headers)
+	
+		#print _data
+		#print r.text
+	except requests.ConnectionError, e:
+		print e
+		
+	if r.status_code != 200 :
+		print r.text
+
 
 def postData(v):
     '发送采集到的数据到指定服务商'
@@ -98,7 +122,13 @@ def postData(v):
 	print e    	
 
 if __name__=='__main__':
+    print 'posting data to onenet and lewei...'	
+    t0=time.time()
     while (True):
+        t1=time.time()
         samplingPower(1,72)
         postData(values)
+        if ((t1-t0)>10):
+             postDataToLewei(values[0],values[1],values[2],values[3],values[4])
+             t0=time.time()
         time.sleep(2)
