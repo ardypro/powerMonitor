@@ -1,4 +1,4 @@
- -*- coding: utf-8 -*-
+ #-*- coding: utf-8 -*-
 
 import requests
 import json
@@ -15,7 +15,7 @@ co2='CO2'
 prate='P_Rate'
 
 def sampling():
-	foo=4
+	return 1,2,3,4,5,6
 
 def postData(v,a,w,k,c,p):
 	payload={voltage:v, amp:a, watt:w, kwh:k, co2:c, prate:p}
@@ -29,5 +29,5 @@ def postData(v,a,w,k,c,p):
 		print r.text
 
 if __name__=='__main__':
-	sampling()
-	#postData()
+	#sampling()
+	postData(1,2,3,4,5,6)
