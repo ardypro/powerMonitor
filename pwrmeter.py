@@ -39,7 +39,7 @@ lwTrueFlag='{"Successful":true,"Message":"Successful. "}'
 def clearKwh(slave):
     pwrMeter=minimalmodbus.Instrument('/dev/ttyS1',slave)
     pwrMeter.serial.baudrate=4800
-    pwrMeter.serial.timeout=10
+    pwrMeter.serial.timeout=5
     pwrMeter.write_registers(12,[0,0])
 
 
@@ -82,7 +82,7 @@ def samplingPower(slave,register):
     try:
         powerMeter = minimalmodbus.Instrument('/dev/ttyS1',slave)
         powerMeter.serial.baudrate=4800
-        powerMeter.serial.timeout=10
+        powerMeter.serial.timeout=5
 
         
         #if (DEBUG_MODE):
@@ -139,7 +139,7 @@ def postdata(api,key,header,data):
     '''POST数据到指定IOT服务器'''
     global 	errCounts
     try:
-        r=requests.post(api,data,headers=header)
+        r=requests.post(api,data,headers=header,timeout=10)
         errCounts=0     #reset err counts to 0
 
         #turnOnBLUE()
@@ -149,6 +149,7 @@ def postdata(api,key,header,data):
         if (DEBUG_MODE):
             print ('网络连接断开，无法发送数据')
             logging.exception('网络连接断开！')
+     
 
         turnOnRED()
         errCounts = errCounts + 1
@@ -156,8 +157,12 @@ def postdata(api,key,header,data):
             os.system('sudo reboot')    #reboot the computer
         else:
             errCounts = errCounts % 5
-
-
+	
+    except requests.exceptions.ReadTimeout,e:
+    	if (DEBUG_MODE):
+    		print 'time out'
+    		logging.exception('read timed out')
+    		
 
 
 def postDataToLewei(v,a,w,kwh,pf,err):
