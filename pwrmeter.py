@@ -270,9 +270,33 @@ def main():
     print '初始化设备...' 
     t0=time.time()
     
-    logging.basicConfig(filename="sample.log",filemode='w',level=logging.INFO)
-    formatter = logging.Formatter('%(asctime)s - %(name)s - %(levelname)s - %(message)s')
-    logging.setFormatter(formatter)
+    dictLogConfig = {
+        "version":1,
+        "handlers":{
+                    "fileHandler":{
+                        "class":"logging.FileHandler",
+                        "formatter":"myFormatter",
+                        "filename":"pwr.log"
+                        }
+                    },        
+        "loggers":{
+            "exampleApp":{
+                "handlers":["fileHandler"],
+                "level":"INFO",
+                }
+            },
+ 
+        "formatters":{
+            "myFormatter":{
+                "format":"%(asctime)s - %(name)s - %(levelname)s - %(message)s"
+                }
+            }
+        }
+
+    logging.config.dictConfig(dictLogConfig)
+    #logging.basicConfig(filename="sample.log",filemode='w',level=logging.INFO)
+    #formatter = logging.Formatter('%(asctime)s - %(name)s - %(levelname)s - %(message)s')
+    #logging.setFormatter(formatter)
     logging.info('创建log文档')
 
     gpio.pin_mode(BLUEPin, gpio.OUTPUT)
