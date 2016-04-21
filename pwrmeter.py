@@ -8,7 +8,7 @@
     v1.0    newly created project
     v1.1    add postDataToLewei()
     v1.2    add reboot system after err counts reaches 5
-
+    v1.3    add log function
 
 
 
@@ -22,14 +22,15 @@ import requests
 import json
 import os
 import gpio
+import logging
 
-version_str =   '1.2'
+version_str =   '1.3'
 
 errCounts   =   0     #err counts, if it reaches 5, then reboot the board
 DEBUG_MODE  =   False     #debug mode
 
 REDPin      =   "gpio7"
-GREENPin    =   "gpio8"
+BLUEPin     =   "gpio8"
 
 hmTrueFlag = '{"errno":0,"error":"succ"}'
 lwTrueFlag='{"Successful":true,"Message":"Successful. "}'
@@ -43,7 +44,7 @@ def clearKwh(slave):
 
 
 def turnOnRED():
-    turnOffGREEN()
+    turnOffBLUE()
     gpio.digital_write(REDPin, gpio.LOW)
 
 
@@ -53,14 +54,14 @@ def turnOffRED():
 
     
 
-def turnOnGREEN():
+def turnOnBLUE():
     turnOffRED()
-    gpio.digital_write(GREENPin, gpio.LOW)
+    gpio.digital_write(BLUEPin, gpio.LOW)
 
 
     
-def turnOffGREEN():
-    gpio.digital_write(GREENPin, gpio.HIGH)
+def turnOffBLUE():
+    gpio.digital_write(BLUEPin, gpio.HIGH)
 
     
 
@@ -87,7 +88,6 @@ def samplingPower(slave,register):
             print powerMeter
 
         try:
-            turnOnGREEN()	
             powerInfo = powerMeter.read_registers(register,6)
 
             #需要判断返回是否正常
@@ -100,23 +100,30 @@ def samplingPower(slave,register):
             kwh=round( (hi+low) /3200.0,4)    
             pf=powerInfo[5]/1000.0
             err=0
-            turnOnGREEN()
-            
+            turnOffBLUE()
+            turnOffRED()
+
         except IOError:
-            print '电表通讯故障，或者电表离线'
+            if (DEBUG_MODE):
+                print '电表通讯故障，或者电表离线'
+                logging.exception('电表通讯故障。')
             err=1
-            turnOnRED()
+            turnOnBLUE()
             
         except ValueError:
-            print '电表采集数据格式错误'
+            if (DEBUG_MODE):
+                print '电表采集数据格式错误'
+                logging.exception('电表数据格式错误。')
             err=2
-            turnOnRED()
+            turnOnBLUE()
             
     except serial.SerialException,e:
-        print e
-        print '串口通信故障'
+        if (DEBUG_MODE):
+            print e
+            print '串口通信故障'
+            logging.exception('串口通信故障。')
         err=3
-        turnOnRED()
+        turnOnBLUE()
         
     #else:
     #    print '其它不明故障'
@@ -134,11 +141,14 @@ def postdata(api,key,header,data):
         r=requests.post(api,data,headers=header)
         errCounts=0     #reset err counts to 0
 
-        #turnOnGREEN()
+        #turnOnBLUE()
         return r.status_code, r.text
 
     except requests.ConnectionError,e:
-        print ('网络连接断开，无法发送数据')
+        if (DEBUG_MODE):
+            print ('网络连接断开，无法发送数据')
+            logging.exception('网络连接断开！')
+
         turnOnRED()
         errCounts = errCounts + 1
         if (errCounts == 5):
@@ -183,10 +193,17 @@ def postDataToLewei(v,a,w,kwh,pf,err):
     print "=========================="
     print " " 
 
+    if (DEBUG_MODE):
+        logging.info('电流: '+ a)
+
     if (text == lwTrueFlag): 
+        if (DEBUG_MODE):
+            logging.info('成功发送到乐为服务器。')
         return True
     else:
-        return False
+        if (DEBUG_MODE):
+            logging.info('发送到乐为服务器失败。')
+        return  False
 
 
 
@@ -218,9 +235,16 @@ def postDataToOneNet(v,a,w,kwh,pf,err):
     print "=========================="
     print " " 
 
+    if (DEBUG_MODE):
+        logging.info('电流: '+a)
+
     if (text == hmTrueFlag):
+        if (DEBUG_MODE):
+            logging.info('成功发送数据到中国移动物联网服务器')
         return True
     else:
+        if (DEBUG_MODE):
+            logging.info('发送数据到中国移动物联网失败')
         return False	
 
 
@@ -242,24 +266,29 @@ def test():
 
 
 #================main proc===========================
-if __name__=='__main__':
-    print '初始化设备...'	
+def main():
+    print '初始化设备...' 
     t0=time.time()
     
-    gpio.pin_mode(GREENPin, gpio.OUTPUT)
+    logging.basicConfig(filename="sample.log",filemode='w',level=logging.INFO)
+    formatter = logging.Formatter('%(asctime)s - %(name)s - %(levelname)s - %(message)s')
+    logging.setFormatter(formatter)
+    logging.info('创建log文档')
+
+    gpio.pin_mode(BLUEPin, gpio.OUTPUT)
     gpio.pin_mode(REDPin, gpio.OUTPUT)
-    turnOnGREEN()
+    turnOnBLUE()
     turnOnRED()
     time.sleep(2)
-    turnOffGREEN()
+    turnOffBLUE()
     turnOffRED()
     time.sleep(10)  #设备初始化
 
     print '设备初始化完毕'
     
     while (True):
-        #turnOffRED()   #省电
-        turnOffGREEN()
+        turnOffRED()   #省电
+        turnOffBLUE()
         t1=time.time()
 
         values=samplingPower(1,72)
@@ -271,3 +300,6 @@ if __name__=='__main__':
 
             
  
+
+if __name__=='__main__':
+    main()
