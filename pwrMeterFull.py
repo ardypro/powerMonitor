@@ -21,11 +21,15 @@ import time
 import requests
 import json
 import os
+import gpio
 
-version_str='1.2'
+version_str =   '1.2'
 
-errCounts=0     #err counts, if it reaches 5, then reboot the board
-DEBUG_MODE=False     #debug mode
+errCounts   =   0     #err counts, if it reaches 5, then reboot the board
+DEBUG_MODE  =   False     #debug mode
+
+REDPin      =   "gpio14"
+GREENPin    =   "gpio15"
 
 def clearKwh(slave):
     pwrMeter=minimalmodbus.Instrument('/dev/ttyS1',slave)
@@ -33,6 +37,29 @@ def clearKwh(slave):
     pwrMeter.serial.timeout=10
     pwrMeter.write_registers(12,[0,0])
 
+
+
+def turnOnRED():
+    turnOffGREEN()
+    gpio.digitalWrite(REDPin, gpio.LOW)
+
+
+    
+def turnOffRED():
+    gpio.digitalWrite(REDPin, gpio.HIGH)
+
+    
+
+def turnOnGREEN():
+    turnOffRED()
+    gpio.digitalWrite(GREENPin, gpio.LOW)
+
+
+    
+def turnOffGREEN():
+    gpio.digitalWrite(GREENPin, gpio.HIGH)
+
+    
 
 def samplingPower(slave,register):
     '采集电量'
@@ -46,12 +73,13 @@ def samplingPower(slave,register):
     w=0.0
     kwh=0.0
     pf=0.0
-
+    err=0 #错误代码
     try:
         powerMeter = minimalmodbus.Instrument('/dev/ttyS1',slave)
         powerMeter.serial.baudrate=4800
         powerMeter.serial.timeout=10
 
+        
         if (DEBUG_MODE):
             print powerMeter
 
@@ -67,30 +95,47 @@ def samplingPower(slave,register):
             hi<<8
             kwh=round( (hi+low) /3200.0,4)    
             pf=powerInfo[5]/1000.0
-
+            err=0
+            turnOnGREEN()
+            
         except IOError:
-            print 'failed to read from instrument'
+            print '电表通讯故障，或者电表离线'
+            err=1
+            turnOnRED()
+            
         except ValueError:
-            print 'instrument response is invalid'
-
+            print '电表采集数据格式错误'
+            err=2
+            turnOnRED()
+            
     except serial.SerialException,e:
         print e
+        print '串口通信故障'
+        err=3
+        turnOnRED()
+        
     else:
-        print 'other unkown error'
+        print '其它不明故障'
+        err=4
+        turnOnRED()
+        
     finally:
-        return v,a,w,kwh,pf
+        return v,a,w,kwh,pf,err
 
 
 def postdata(api,key,header,data):
-    '''post data to the api server'''
+    '''POST数据到指定IOT服务器'''
+    
     try:
         r=requests.post(api,data,headers=header)
         errCounts=0     #reset err counts to 0
 
+        turnOnGREEN()
         return r.status_code, r.text
 
     except requests.ConnectionError,e:
-        print ('it is offline, and set the led to be RED')
+        print ('网络连接断开，无法发送数据')
+        turnOnRED()
         errCounts=errCounts+1
         if (errCounts==5):
             os.system('sudo reboot')    #reboot the computer
@@ -100,7 +145,7 @@ def postdata(api,key,header,data):
 
 
 
-def postDataToLewei(v,a,w,kwh,pf):
+def postDataToLewei(v,a,w,kwh,pf,err):
 
     lw_api='http://www.lewei50.com/api/v1/gateway/updatesensors/02'
     lw_api_key='2c2a9948d4c049c18560ddbfb46930d8'
@@ -109,7 +154,8 @@ def postDataToLewei(v,a,w,kwh,pf):
     _data=_data+'{"Name":"a1","Value":"'+ str(a) +'"},'
     _data=_data+'{"Name":"w1","Value":"'+ str(w) +'"},'
     _data=_data+'{"Name":"kw","Value":"'+ str(kwh) +'"},'
-    _data=_data+'{"Name":"pf","Value":"'+ str(pf) +'"}'
+    _data=_data+'{"Name":"pf","Value":"'+ str(pf) +'"},'
+    _data=_data+'{"Name":"e1","Value":"'+ str(err) +'"}'
     _data=_data+']'
 
 
@@ -139,12 +185,13 @@ def postDataToLewei(v,a,w,kwh,pf):
         return False
 
 
-def postDataToOneNet(v,a,w,kwh,pf):
-    '发送采集到的数据到onenet.10086.cn'
+
+def postDataToOneNet(v,a,w,kwh,pf,err):
+    '''发送采集到的数据到onenet.10086.cn'''
 
     hm_api='http://api.heclouds.com/devices/1071322/datapoints?type=3'
     hm_api_key='YPjeEHaQKQA0aholzHpROJI4CCc='
-    payload={'Voltage':v, 'Amp':a, 'WATT':w, 'TotalKWh':kwh, 'P_Rate':pf}
+    payload={'Voltage':v, 'Amp':a, 'WATT':w, 'TotalKWh':kwh, 'P_Rate':pf, 'err':err}
     _data=json.dumps(payload)
     _headers={'api-key':hm_api_key}
 
@@ -185,22 +232,32 @@ def test():
 
     w=vol*amp*pf
     kwh=0
+    err=0
 
-    return vol,amp,w,kwh,pf
+    return vol,amp,w,kwh,pf,err
 
 
 #================main proc===========================
 if __name__=='__main__':
-    print 'Ready to post data to IOT Server...'	
+    print '初始化设备...'	
     t0=time.time()
+    
+    gpio.pinMode(GREENPin, gpio.OUTPUT)
+    gpio.pinMode(REDPin, gpio.OUTPUT)
+    turnOnGREEN()
+    time.sleep(15)  #设备初始化
 
+    print '设备初始化完毕'
+    
     while (True):
+        #turnOffRED()   #省电
+        turnOffGREEN()
         t1=time.time()
 
         values=samplingPower(1,72)
-        postDataToOneNet(values[0],values[1],values[2],values[3],values[4])
-        if ((t1-t0)>15):
-             postDataToLewei(values[0],values[1],values[2],values[3],values[4])
+        postDataToOneNet(values[0],values[1],values[2],values[3],values[4],values[5])
+        if ((t1-t0)>20):
+             postDataToLewei(values[0],values[1],values[2],values[3],values[4],values[5])
              t0=time.time()
         time.sleep(2)
 
