@@ -28,8 +28,8 @@ version_str =   '1.2'
 errCounts   =   0     #err counts, if it reaches 5, then reboot the board
 DEBUG_MODE  =   False     #debug mode
 
-REDPin      =   "gpio14"
-GREENPin    =   "gpio15"
+REDPin      =   "gpio7"
+GREENPin    =   "gpio8"
 
 def clearKwh(slave):
     pwrMeter=minimalmodbus.Instrument('/dev/ttyS1',slave)
@@ -41,23 +41,23 @@ def clearKwh(slave):
 
 def turnOnRED():
     turnOffGREEN()
-    gpio.digitalWrite(REDPin, gpio.LOW)
+    gpio.digital_write(REDPin, gpio.LOW)
 
 
     
 def turnOffRED():
-    gpio.digitalWrite(REDPin, gpio.HIGH)
+    gpio.digital_write(REDPin, gpio.HIGH)
 
     
 
 def turnOnGREEN():
     turnOffRED()
-    gpio.digitalWrite(GREENPin, gpio.LOW)
+    gpio.digital_write(GREENPin, gpio.LOW)
 
 
     
 def turnOffGREEN():
-    gpio.digitalWrite(GREENPin, gpio.HIGH)
+    gpio.digital_write(GREENPin, gpio.HIGH)
 
     
 
@@ -83,7 +83,8 @@ def samplingPower(slave,register):
         if (DEBUG_MODE):
             print powerMeter
 
-        try:	
+        try:
+            turnOnGREEN()	
             powerInfo = powerMeter.read_registers(register,6)
 
             #需要判断返回是否正常
@@ -114,10 +115,10 @@ def samplingPower(slave,register):
         err=3
         turnOnRED()
         
-    else:
-        print '其它不明故障'
-        err=4
-        turnOnRED()
+    #else:
+    #    print '其它不明故障'
+    #    err=4
+    #    turnOnRED()
         
     finally:
         return v,a,w,kwh,pf,err
@@ -130,17 +131,17 @@ def postdata(api,key,header,data):
         r=requests.post(api,data,headers=header)
         errCounts=0     #reset err counts to 0
 
-        turnOnGREEN()
+        #turnOnGREEN()
         return r.status_code, r.text
 
     except requests.ConnectionError,e:
         print ('网络连接断开，无法发送数据')
         turnOnRED()
-        errCounts=errCounts+1
-        if (errCounts==5):
+        errCounts = errCounts + 1
+        if (errCounts == 5):
             os.system('sudo reboot')    #reboot the computer
         else:
-            errCounts=errCounts%5
+            errCounts = errCounts % 5
 
 
 
@@ -242,10 +243,14 @@ if __name__=='__main__':
     print '初始化设备...'	
     t0=time.time()
     
-    gpio.pinMode(GREENPin, gpio.OUTPUT)
-    gpio.pinMode(REDPin, gpio.OUTPUT)
+    gpio.pin_mode(GREENPin, gpio.OUTPUT)
+    gpio.pin_mode(REDPin, gpio.OUTPUT)
     turnOnGREEN()
-    time.sleep(15)  #设备初始化
+    turnOfRED()
+    time.sleep(2)
+    turnOffGREEN()
+    turnOffRED()
+    time.sleep(10)  #设备初始化
 
     print '设备初始化完毕'
     
