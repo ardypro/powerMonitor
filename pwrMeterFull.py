@@ -246,7 +246,7 @@ if __name__=='__main__':
     gpio.pin_mode(GREENPin, gpio.OUTPUT)
     gpio.pin_mode(REDPin, gpio.OUTPUT)
     turnOnGREEN()
-    turnOfRED()
+    turnOnRED()
     time.sleep(2)
     turnOffGREEN()
     turnOffRED()
