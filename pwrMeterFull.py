@@ -31,6 +31,9 @@ DEBUG_MODE  =   False     #debug mode
 REDPin      =   "gpio7"
 GREENPin    =   "gpio8"
 
+hmTrueFlag = '{"errno":0,"error":"succ"}'
+lwTrueFlag='{"Successful":true,"Message":"Successful. "}'
+
 def clearKwh(slave):
     pwrMeter=minimalmodbus.Instrument('/dev/ttyS1',slave)
     pwrMeter.serial.baudrate=4800
@@ -126,7 +129,7 @@ def samplingPower(slave,register):
 
 def postdata(api,key,header,data):
     '''POST数据到指定IOT服务器'''
-    
+    global 	errCounts
     try:
         r=requests.post(api,data,headers=header)
         errCounts=0     #reset err counts to 0
@@ -180,7 +183,7 @@ def postDataToLewei(v,a,w,kwh,pf,err):
     print "=========================="
     print " " 
 
-    if (code==200): #need to be modified later
+    if (text == lwTrueFlag): 
         return True
     else:
         return False
@@ -215,7 +218,7 @@ def postDataToOneNet(v,a,w,kwh,pf,err):
     print "=========================="
     print " " 
 
-    if (code==200):
+    if (text == hmTrueFlag):
         return True
     else:
         return False	
