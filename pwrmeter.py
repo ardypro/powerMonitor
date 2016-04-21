@@ -23,11 +23,12 @@ import json
 import os
 import gpio
 import logging
+import logging.config
 
 version_str =   '1.3'
 
 errCounts   =   0     #err counts, if it reaches 5, then reboot the board
-DEBUG_MODE  =   False     #debug mode
+DEBUG_MODE  =   True     #debug mode
 
 REDPin      =   "gpio7"
 BLUEPin     =   "gpio8"
@@ -45,31 +46,31 @@ def clearKwh(slave):
 
 def turnOnRED():
     turnOffBLUE()
-    gpio.digital_write(REDPin, gpio.LOW)
+    gpio.digitalWrite(REDPin, gpio.LOW)
 
 
     
 def turnOffRED():
-    gpio.digital_write(REDPin, gpio.HIGH)
+    gpio.digitalWrite(REDPin, gpio.HIGH)
 
     
 
 def turnOnBLUE():
     turnOffRED()
-    gpio.digital_write(BLUEPin, gpio.LOW)
+    gpio.digitalWrite(BLUEPin, gpio.LOW)
 
 
     
 def turnOffBLUE():
-    gpio.digital_write(BLUEPin, gpio.HIGH)
+    gpio.digitalWrite(BLUEPin, gpio.HIGH)
 
     
 
 def samplingPower(slave,register):
     '采集电量'
-    if (DEBUG_MODE):
-        values= test()
-        return values
+    #if (DEBUG_MODE):
+    #   values= test()
+    #    return values
 
     #define variable to host power info
     v=0.0
@@ -84,8 +85,8 @@ def samplingPower(slave,register):
         powerMeter.serial.timeout=10
 
         
-        if (DEBUG_MODE):
-            print powerMeter
+        #if (DEBUG_MODE):
+        #    print powerMeter
 
         try:
             powerInfo = powerMeter.read_registers(register,6)
@@ -194,7 +195,7 @@ def postDataToLewei(v,a,w,kwh,pf,err):
     print " " 
 
     if (DEBUG_MODE):
-        logging.info('电流: '+ a)
+        logging.info('电流: '+ str(a))
 
     if (text == lwTrueFlag): 
         if (DEBUG_MODE):
@@ -236,7 +237,7 @@ def postDataToOneNet(v,a,w,kwh,pf,err):
     print " " 
 
     if (DEBUG_MODE):
-        logging.info('电流: '+a)
+        logging.info('电流: '+str(a))
 
     if (text == hmTrueFlag):
         if (DEBUG_MODE):
@@ -299,11 +300,12 @@ def main():
     #logging.setFormatter(formatter)
     logging.info('创建log文档')
 
-    gpio.pin_mode(BLUEPin, gpio.OUTPUT)
-    gpio.pin_mode(REDPin, gpio.OUTPUT)
+    gpio.pinMode(BLUEPin, gpio.OUTPUT)
+    gpio.pinMode(REDPin, gpio.OUTPUT)
     turnOnBLUE()
+    time.sleep(0.5)
     turnOnRED()
-    time.sleep(2)
+    time.sleep(0.5)
     turnOffBLUE()
     turnOffRED()
     time.sleep(10)  #设备初始化
