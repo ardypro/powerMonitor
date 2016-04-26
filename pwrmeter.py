@@ -126,6 +126,8 @@ def samplingPower(slave,register):
         err=3
         turnOnBLUE()
         
+    #timeout exception:
+    
     #else:
     #    print '其它不明故障'
     #    err=4
@@ -139,7 +141,7 @@ def postdata(api,key,header,data):
     '''POST数据到指定IOT服务器'''
     global 	errCounts
     try:
-        r=requests.post(api,data,headers=header,timeout=10)
+        r=requests.post(api,data,headers=header,timeout=15)
         errCounts=0     #reset err counts to 0
 
         #turnOnBLUE()
@@ -166,7 +168,11 @@ def postdata(api,key,header,data):
 
 
 def postDataToLewei(v,a,w,kwh,pf,err):
-
+    if (v<=0.001):		#modbus communication error
+    	turnOnBLUE()
+    	return False
+    	
+    	
     lw_api='http://www.lewei50.com/api/v1/gateway/updatesensors/02'
     lw_api_key='2c2a9948d4c049c18560ddbfb46930d8'
     _data='['
@@ -208,14 +214,17 @@ def postDataToLewei(v,a,w,kwh,pf,err):
         return True
     else:
         if (DEBUG_MODE):
-            logging.info('发送到乐为服务器失败。')
+            logging.exception('发送到乐为服务器失败。')
         return  False
 
 
 
 def postDataToOneNet(v,a,w,kwh,pf,err):
     '''发送采集到的数据到onenet.10086.cn'''
-
+    if (v<=0.001):		#modbus communication error
+    	turnOnBLUE()
+    	return False
+    	
     hm_api='http://api.heclouds.com/devices/1071322/datapoints?type=3'
     hm_api_key='YPjeEHaQKQA0aholzHpROJI4CCc='
     payload={'Voltage':v, 'Amp':a, 'WATT':w, 'TotalKWh':kwh, 'P_Rate':pf, 'err':err}
@@ -250,7 +259,7 @@ def postDataToOneNet(v,a,w,kwh,pf,err):
         return True
     else:
         if (DEBUG_MODE):
-            logging.info('发送数据到中国移动物联网失败')
+            logging.exception('发送数据到中国移动物联网失败')
         return False	
 
 
@@ -282,11 +291,11 @@ def main():
                     "fileHandler":{
                         "class":"logging.FileHandler",
                         "formatter":"myFormatter",
-                        "filename":"pwr.log"
+                        "filename":"pwrinfo.log"
                         }
                     },        
         "loggers":{
-            "exampleApp":{
+            "pwrMeter":{
                 "handlers":["fileHandler"],
                 "level":"INFO",
                 }
