@@ -43,7 +43,10 @@ nwErrcounts	=	0	#network communication error
 def delaySeconds(s):
     time.sleep(s)
 
-
+def reboot():
+	os.system('sudo reboot')
+	
+	
 def clearKwh(slave):
     pwrMeter=minimalmodbus.Instrument('/dev/ttyS1',slave)
     pwrMeter.serial.baudrate=4800
@@ -52,24 +55,24 @@ def clearKwh(slave):
 
 
 
-def turnOnRED():
-    turnOffBLUE()
+def doNetworkErr():
+    doModbusNormal()
     gpio.digitalWrite(REDPin, gpio.LOW)
 
 
     
-def turnOffRED():
+def doNetworkNormal():
     gpio.digitalWrite(REDPin, gpio.HIGH)
 
     
 
-def turnOnBLUE():
-    turnOffRED()
+def doModbusErr():
+    doNetworkNormal()
     gpio.digitalWrite(BLUEPin, gpio.LOW)
 
 
     
-def turnOffBLUE():
+def doModbusNormal():
     gpio.digitalWrite(BLUEPin, gpio.HIGH)
 
     
@@ -109,22 +112,18 @@ def samplingPower(slave,register):
             kwh=round( (hi+low) /3200.0,4)    
             pf=powerInfo[5]/1000.0
             err=0
-            turnOffBLUE()
-            #turnOffRED()
 
         except IOError:
             if (DEBUG_MODE):
                 print '电表通讯故障，或者电表离线'
                 logging.exception('电表通讯故障。')
             err=1
-            turnOnBLUE()
             
         except ValueError:
             if (DEBUG_MODE):
                 print '电表采集数据格式错误'
                 logging.exception('电表数据格式错误。')
             err=2
-            turnOnBLUE()
             
     except serial.SerialException,e:
         if (DEBUG_MODE):
@@ -132,52 +131,79 @@ def samplingPower(slave,register):
             print '串口通信故障'
             logging.exception('串口通信故障。')
         err=3
-        turnOnBLUE()
+
         
     #timeout exception:
     
     #else:
     #    print '其它不明故障'
     #    err=4
-    #    turnOnRED()
+
         
     finally:
-        return v,a,w,kwh,pf,err
+		if (err==0):
+			doModbusNormal()
+			mdErrcounts	=	0
+			
+		else:
+			doModbusErr()
+			mdErrcounts	=	mdErrcounts + 1
+			if ((mdErrcounts>5 ) and (mdErrcounts<10)):
+				delaySeconds(10)
+			if (mdErrcounts>=10):
+				reboot()
+			
+    return v,a,w,kwh,pf,err
 
 
 def postdata(api,key,header,data):
     '''POST数据到指定IOT服务器'''
+    
     global 	errCounts
+    respCode	=	0
+    respText	=	' '
+    errCode		=	0
     try:
-        r=requests.post(api,data,headers=header,timeout=15)
-        errCounts=0     #reset err counts to 0
-
-        #turnOnBLUE()
-        return r.status_code, r.text
+		r=requests.post(api,data,headers=header,timeout=15)
+		nwErrcounts	=	0
+		
+		respCode	=	r.status_code
+		respText	=	r.text
+		errCode		=	0
+        #return r.status_code, r.text
 
     except requests.ConnectionError,e:
         if (DEBUG_MODE):
             print ('网络连接断开，无法发送数据')
             logging.exception('网络连接断开！')
-     
-
-        turnOnRED()
-        errCounts = errCounts + 1
-        if (errCounts == 5):
-            os.system('sudo reboot')    #reboot the computer
-        else:
-            errCounts = errCounts % 5
-	
+        errCode=1
+		
     except requests.exceptions.ReadTimeout,e:
     	if (DEBUG_MODE):
     		print 'time out'
     		logging.exception('read timed out')
+    	errCode		=	2
+    	
+    finally:
+		if (errCode==0):
+			nwErrcounts	=	0
+			doNetworkNormal()
+		else:
+			doNetworkErr()
+			nwErrcounts =	nwErrcounts + 1
+			if (nwErrCounts >=5):
+				if (nwErrcounts>=10):
+					reboot()				
+				delaySeconds(5)
+
+					
+		return respCode, respText
     		
 
 
 def postDataToLewei(v,a,w,kwh,pf,err):
     if (v<=0.001):		#modbus communication error
-    	turnOnBLUE()
+    	doModbusErr()
     	return False
     	
     	
@@ -196,22 +222,22 @@ def postDataToLewei(v,a,w,kwh,pf,err):
 
     _headers={'userkey':lw_api_key}
     code,text=postdata(lw_api,lw_api_key,_headers,_data)
-
-    print " "
-    print "==============>>>>>>>>>>>>"
-    print "posting data to ", lw_api
-    print " "
-    print  'Time:    \t', time.asctime( time.localtime(time.time()) )
-    print  '电压:     \t', v
-    print  '电流:     \t', a
-    print  '有功功率:  \t', w
-    print  '电能:     \t', kwh
-    print  '功率因素： \t', pf
-    print " " 
-    print code
-    print text
-    print "=========================="
-    print " " 
+    if (DEBUG_MODE):
+		print " "
+		print "==============>>>>>>>>>>>>"
+		print "posting data to ", lw_api
+		print " "
+		print  'Time:    \t', time.asctime( time.localtime(time.time()) )
+		print  '电压:     \t', v
+		print  '电流:     \t', a
+		print  '有功功率:  \t', w
+		print  '电能:     \t', kwh
+		print  '功率因素： \t', pf
+		print " " 
+		print code
+		print text
+		print "=========================="
+		print " " 
 
     if (DEBUG_MODE):
         logging.info('电流: '+ str(a))
@@ -229,8 +255,8 @@ def postDataToLewei(v,a,w,kwh,pf,err):
 
 def postDataToOneNet(v,a,w,kwh,pf,err):
     '''发送采集到的数据到onenet.10086.cn'''
-    if (v<=0.001):		#modbus communication error
-    	turnOnBLUE()
+    if (v<=0.001):		#采集到的电压为0，由于模块是有被采样电路供电，所以采集到0V电压是错误的
+    	doModbusErr()
     	return False
     	
     hm_api='http://api.heclouds.com/devices/1071322/datapoints?type=3'
@@ -241,22 +267,23 @@ def postDataToOneNet(v,a,w,kwh,pf,err):
 
 
     code,text=postdata(hm_api,hm_api_key,_headers,_data)
-
-    print " "
-    print "==============>>>>>>>>>>>>"
-    print "posting data to ", hm_api
-    print " "
-    print  'Time:    \t', time.asctime( time.localtime(time.time()) )
-    print  '电压:     \t', v
-    print  '电流:     \t', a
-    print  '有功功率:  \t', w
-    print  '电能:     \t', kwh
-    print  '功率因素： \t', pf
-    print " " 
-    print code
-    print text
-    print "=========================="
-    print " " 
+	
+    if (DEBUG_MODE):
+		print " "
+		print "==============>>>>>>>>>>>>"
+		print "posting data to ", hm_api
+		print " "
+		print  'Time:    \t', time.asctime( time.localtime(time.time()) )
+		print  '电压:     \t', v
+		print  '电流:     \t', a
+		print  '有功功率:  \t', w
+		print  '电能:     \t', kwh
+		print  '功率因素： \t', pf
+		print " " 
+		print code
+		print text
+		print "=========================="
+		print " " 
 
     if (DEBUG_MODE):
         logging.info('电流: '+str(a))
@@ -293,50 +320,33 @@ def main():
     print '初始化设备...' 
     t0=time.time()
     
-    dictLogConfig = {
-        "version":1,
-        "handlers":{
-                    "fileHandler":{
-                        "class":"logging.FileHandler",
-                        "formatter":"myFormatter",
-                        "filename":"pwrinfo.log"
-                        }
-                    },        
-        "loggers":{
-            "pwrMeter":{
-                "handlers":["fileHandler"],
-                "level":"INFO",
-                }
-            },
- 
-        "formatters":{
-            "myFormatter":{
-                "format":"%(asctime)s - %(name)s - %(levelname)s - %(message)s"
-                }
-            }
-        }
 
-    logging.config.dictConfig(dictLogConfig)
-    #logging.basicConfig(filename="sample.log",filemode='w',level=logging.INFO)
-    #formatter = logging.Formatter('%(asctime)s - %(name)s - %(levelname)s - %(message)s')
-    #logging.setFormatter(formatter)
+    logging.basicConfig(level=logging.DEBUG,
+					format='%(asctime)s %(filename)s[line:%(lineno)d] %(levelname)s %(message)s',
+					datefmt='%a, %d %b %Y %H:%M:%S',
+					filename='pwrinfo.log',
+					filemode='w')
+		
+    logging.debug('调试模式')
+    logging.info('初始化设备...')
+    logging.warning('测试logging')
     logging.info('创建log文档')
 
     gpio.pinMode(BLUEPin, gpio.OUTPUT)
     gpio.pinMode(REDPin, gpio.OUTPUT)
-    turnOnBLUE()
+    doModbusErr()
     time.sleep(0.5)
-    turnOnRED()
+    doNetworkErr()
     time.sleep(0.5)
-    turnOffBLUE()
-    turnOffRED()
+    doModbusNormal()
+    doNetworkNormal()
     time.sleep(10)  #设备初始化
 
     print '设备初始化完毕'
     
     while (True):
-        turnOffRED()   #省电
-        turnOffBLUE()
+        doNetworkNormal()   #省电
+        doModbusNormal()
         t1=time.time()
 
         values=samplingPower(1,72)
