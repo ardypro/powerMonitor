@@ -33,8 +33,16 @@ DEBUG_MODE  =   True     #debug mode
 REDPin      =   "gpio7"
 BLUEPin     =   "gpio8"
 
+#判断POST操作成功的标识
 hmTrueFlag = '{"errno":0,"error":"succ"}'
 lwTrueFlag='{"Successful":true,"Message":"Successful. "}'
+
+mdErrcounts	=	0	#modbus communication error
+nwErrcounts	=	0	#network communication error
+
+def delaySeconds(s):
+    time.sleep(s)
+
 
 def clearKwh(slave):
     pwrMeter=minimalmodbus.Instrument('/dev/ttyS1',slave)
@@ -102,7 +110,7 @@ def samplingPower(slave,register):
             pf=powerInfo[5]/1000.0
             err=0
             turnOffBLUE()
-            turnOffRED()
+            #turnOffRED()
 
         except IOError:
             if (DEBUG_MODE):
