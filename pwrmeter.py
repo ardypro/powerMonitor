@@ -196,7 +196,7 @@ def postdata(api,key,header,data):
 		else:
 			doNetworkErr()
 			nwErrcounts =	nwErrcounts + 1
-			if (nwErrCounts >=5):
+			if (nwErrcounts >=5):
 				if (nwErrcounts>=10):
 					reboot()				
 				delaySeconds(5)
