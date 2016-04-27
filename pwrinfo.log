@@ -1,4 +1,328 @@
-Tue, 26 Apr 2016 21:57:51 pwrmeter.py[line:330] DEBUG 调试模式
-Tue, 26 Apr 2016 21:57:51 pwrmeter.py[line:331] INFO 初始化设备...
-Tue, 26 Apr 2016 21:57:51 pwrmeter.py[line:332] WARNING 测试logging
-Tue, 26 Apr 2016 21:57:51 pwrmeter.py[line:333] INFO 创建log文档
+Wed, 27 Apr 2016 09:06:11 pwrmeter.py[line:335] DEBUG 调试模式
+Wed, 27 Apr 2016 09:06:11 pwrmeter.py[line:336] INFO 初始化设备...
+Wed, 27 Apr 2016 09:06:11 pwrmeter.py[line:337] WARNING 测试logging
+Wed, 27 Apr 2016 09:06:11 pwrmeter.py[line:338] INFO 创建log文档
+Wed, 27 Apr 2016 09:06:22 connectionpool.py[line:207] INFO Starting new HTTP connection (1): api.heclouds.com
+Wed, 27 Apr 2016 09:06:23 connectionpool.py[line:387] DEBUG "POST /devices/1071322/datapoints?type=3 HTTP/1.1" 200 26
+Wed, 27 Apr 2016 09:06:23 pwrmeter.py[line:294] INFO 电流: 0.91
+Wed, 27 Apr 2016 09:06:23 pwrmeter.py[line:298] INFO 成功发送数据到中国移动物联网服务器
+Wed, 27 Apr 2016 09:06:25 connectionpool.py[line:207] INFO Starting new HTTP connection (1): api.heclouds.com
+Wed, 27 Apr 2016 09:06:25 connectionpool.py[line:387] DEBUG "POST /devices/1071322/datapoints?type=3 HTTP/1.1" 200 26
+Wed, 27 Apr 2016 09:06:25 pwrmeter.py[line:294] INFO 电流: 1.92
+Wed, 27 Apr 2016 09:06:25 pwrmeter.py[line:298] INFO 成功发送数据到中国移动物联网服务器
+Wed, 27 Apr 2016 09:06:27 connectionpool.py[line:207] INFO Starting new HTTP connection (1): api.heclouds.com
+Wed, 27 Apr 2016 09:06:28 connectionpool.py[line:387] DEBUG "POST /devices/1071322/datapoints?type=3 HTTP/1.1" 200 26
+Wed, 27 Apr 2016 09:06:28 pwrmeter.py[line:294] INFO 电流: 1.61
+Wed, 27 Apr 2016 09:06:28 pwrmeter.py[line:298] INFO 成功发送数据到中国移动物联网服务器
+Wed, 27 Apr 2016 09:06:30 connectionpool.py[line:207] INFO Starting new HTTP connection (1): api.heclouds.com
+Wed, 27 Apr 2016 09:06:30 connectionpool.py[line:387] DEBUG "POST /devices/1071322/datapoints?type=3 HTTP/1.1" 200 26
+Wed, 27 Apr 2016 09:06:30 pwrmeter.py[line:294] INFO 电流: 1.62
+Wed, 27 Apr 2016 09:06:30 pwrmeter.py[line:298] INFO 成功发送数据到中国移动物联网服务器
+Wed, 27 Apr 2016 09:06:32 connectionpool.py[line:207] INFO Starting new HTTP connection (1): api.heclouds.com
+Wed, 27 Apr 2016 09:06:32 connectionpool.py[line:387] DEBUG "POST /devices/1071322/datapoints?type=3 HTTP/1.1" 200 26
+Wed, 27 Apr 2016 09:06:32 pwrmeter.py[line:294] INFO 电流: 1.57
+Wed, 27 Apr 2016 09:06:32 pwrmeter.py[line:298] INFO 成功发送数据到中国移动物联网服务器
+Wed, 27 Apr 2016 09:06:32 connectionpool.py[line:207] INFO Starting new HTTP connection (1): www.lewei50.com
+Wed, 27 Apr 2016 09:06:33 connectionpool.py[line:387] DEBUG "POST /api/v1/gateway/updatesensors/02 HTTP/1.1" 200 44
+Wed, 27 Apr 2016 09:06:33 pwrmeter.py[line:248] INFO 电流: 1.57
+Wed, 27 Apr 2016 09:06:33 pwrmeter.py[line:252] INFO 成功发送到乐为服务器。
+Wed, 27 Apr 2016 09:06:35 connectionpool.py[line:207] INFO Starting new HTTP connection (1): api.heclouds.com
+Wed, 27 Apr 2016 09:06:35 connectionpool.py[line:387] DEBUG "POST /devices/1071322/datapoints?type=3 HTTP/1.1" 200 26
+Wed, 27 Apr 2016 09:06:35 pwrmeter.py[line:294] INFO 电流: 1.25
+Wed, 27 Apr 2016 09:06:35 pwrmeter.py[line:298] INFO 成功发送数据到中国移动物联网服务器
+Wed, 27 Apr 2016 09:06:37 connectionpool.py[line:207] INFO Starting new HTTP connection (1): api.heclouds.com
+Wed, 27 Apr 2016 09:06:37 connectionpool.py[line:387] DEBUG "POST /devices/1071322/datapoints?type=3 HTTP/1.1" 200 26
+Wed, 27 Apr 2016 09:06:37 pwrmeter.py[line:294] INFO 电流: 0.91
+Wed, 27 Apr 2016 09:06:37 pwrmeter.py[line:298] INFO 成功发送数据到中国移动物联网服务器
+Wed, 27 Apr 2016 09:06:40 connectionpool.py[line:207] INFO Starting new HTTP connection (1): api.heclouds.com
+Wed, 27 Apr 2016 09:06:40 connectionpool.py[line:387] DEBUG "POST /devices/1071322/datapoints?type=3 HTTP/1.1" 200 26
+Wed, 27 Apr 2016 09:06:40 pwrmeter.py[line:294] INFO 电流: 0.91
+Wed, 27 Apr 2016 09:06:40 pwrmeter.py[line:298] INFO 成功发送数据到中国移动物联网服务器
+Wed, 27 Apr 2016 09:06:42 connectionpool.py[line:207] INFO Starting new HTTP connection (1): api.heclouds.com
+Wed, 27 Apr 2016 09:06:52 connectionpool.py[line:387] DEBUG "POST /devices/1071322/datapoints?type=3 HTTP/1.1" 200 26
+Wed, 27 Apr 2016 09:06:52 pwrmeter.py[line:294] INFO 电流: 1.25
+Wed, 27 Apr 2016 09:06:52 pwrmeter.py[line:298] INFO 成功发送数据到中国移动物联网服务器
+Wed, 27 Apr 2016 09:06:54 connectionpool.py[line:207] INFO Starting new HTTP connection (1): api.heclouds.com
+Wed, 27 Apr 2016 09:06:55 connectionpool.py[line:387] DEBUG "POST /devices/1071322/datapoints?type=3 HTTP/1.1" 200 26
+Wed, 27 Apr 2016 09:06:55 pwrmeter.py[line:294] INFO 电流: 1.6
+Wed, 27 Apr 2016 09:06:55 pwrmeter.py[line:298] INFO 成功发送数据到中国移动物联网服务器
+Wed, 27 Apr 2016 09:06:55 connectionpool.py[line:207] INFO Starting new HTTP connection (1): www.lewei50.com
+Wed, 27 Apr 2016 09:06:55 connectionpool.py[line:387] DEBUG "POST /api/v1/gateway/updatesensors/02 HTTP/1.1" 200 44
+Wed, 27 Apr 2016 09:06:55 pwrmeter.py[line:248] INFO 电流: 1.6
+Wed, 27 Apr 2016 09:06:55 pwrmeter.py[line:252] INFO 成功发送到乐为服务器。
+Wed, 27 Apr 2016 09:06:57 connectionpool.py[line:207] INFO Starting new HTTP connection (1): api.heclouds.com
+Wed, 27 Apr 2016 09:06:57 connectionpool.py[line:387] DEBUG "POST /devices/1071322/datapoints?type=3 HTTP/1.1" 200 26
+Wed, 27 Apr 2016 09:06:57 pwrmeter.py[line:294] INFO 电流: 0.97
+Wed, 27 Apr 2016 09:06:57 pwrmeter.py[line:298] INFO 成功发送数据到中国移动物联网服务器
+Wed, 27 Apr 2016 09:06:59 connectionpool.py[line:207] INFO Starting new HTTP connection (1): api.heclouds.com
+Wed, 27 Apr 2016 09:07:00 connectionpool.py[line:387] DEBUG "POST /devices/1071322/datapoints?type=3 HTTP/1.1" 200 26
+Wed, 27 Apr 2016 09:07:00 pwrmeter.py[line:294] INFO 电流: 1.2
+Wed, 27 Apr 2016 09:07:00 pwrmeter.py[line:298] INFO 成功发送数据到中国移动物联网服务器
+Wed, 27 Apr 2016 09:07:02 connectionpool.py[line:207] INFO Starting new HTTP connection (1): api.heclouds.com
+Wed, 27 Apr 2016 09:07:02 connectionpool.py[line:387] DEBUG "POST /devices/1071322/datapoints?type=3 HTTP/1.1" 200 26
+Wed, 27 Apr 2016 09:07:02 pwrmeter.py[line:294] INFO 电流: 1.65
+Wed, 27 Apr 2016 09:07:02 pwrmeter.py[line:298] INFO 成功发送数据到中国移动物联网服务器
+Wed, 27 Apr 2016 09:07:04 connectionpool.py[line:207] INFO Starting new HTTP connection (1): api.heclouds.com
+Wed, 27 Apr 2016 09:07:04 connectionpool.py[line:387] DEBUG "POST /devices/1071322/datapoints?type=3 HTTP/1.1" 200 26
+Wed, 27 Apr 2016 09:07:04 pwrmeter.py[line:294] INFO 电流: 0.91
+Wed, 27 Apr 2016 09:07:04 pwrmeter.py[line:298] INFO 成功发送数据到中国移动物联网服务器
+Wed, 27 Apr 2016 09:07:06 connectionpool.py[line:207] INFO Starting new HTTP connection (1): api.heclouds.com
+Wed, 27 Apr 2016 09:07:07 connectionpool.py[line:387] DEBUG "POST /devices/1071322/datapoints?type=3 HTTP/1.1" 200 26
+Wed, 27 Apr 2016 09:07:07 pwrmeter.py[line:294] INFO 电流: 0.96
+Wed, 27 Apr 2016 09:07:07 pwrmeter.py[line:298] INFO 成功发送数据到中国移动物联网服务器
+Wed, 27 Apr 2016 09:07:09 connectionpool.py[line:207] INFO Starting new HTTP connection (1): api.heclouds.com
+Wed, 27 Apr 2016 09:07:09 connectionpool.py[line:387] DEBUG "POST /devices/1071322/datapoints?type=3 HTTP/1.1" 200 26
+Wed, 27 Apr 2016 09:07:09 pwrmeter.py[line:294] INFO 电流: 0.98
+Wed, 27 Apr 2016 09:07:09 pwrmeter.py[line:298] INFO 成功发送数据到中国移动物联网服务器
+Wed, 27 Apr 2016 09:07:11 connectionpool.py[line:207] INFO Starting new HTTP connection (1): api.heclouds.com
+Wed, 27 Apr 2016 09:07:11 connectionpool.py[line:387] DEBUG "POST /devices/1071322/datapoints?type=3 HTTP/1.1" 200 26
+Wed, 27 Apr 2016 09:07:11 pwrmeter.py[line:294] INFO 电流: 1.09
+Wed, 27 Apr 2016 09:07:11 pwrmeter.py[line:298] INFO 成功发送数据到中国移动物联网服务器
+Wed, 27 Apr 2016 09:07:13 connectionpool.py[line:207] INFO Starting new HTTP connection (1): api.heclouds.com
+Wed, 27 Apr 2016 09:07:13 connectionpool.py[line:387] DEBUG "POST /devices/1071322/datapoints?type=3 HTTP/1.1" 200 26
+Wed, 27 Apr 2016 09:07:13 pwrmeter.py[line:294] INFO 电流: 0.91
+Wed, 27 Apr 2016 09:07:13 pwrmeter.py[line:298] INFO 成功发送数据到中国移动物联网服务器
+Wed, 27 Apr 2016 09:07:16 connectionpool.py[line:207] INFO Starting new HTTP connection (1): api.heclouds.com
+Wed, 27 Apr 2016 09:07:16 connectionpool.py[line:387] DEBUG "POST /devices/1071322/datapoints?type=3 HTTP/1.1" 200 26
+Wed, 27 Apr 2016 09:07:16 pwrmeter.py[line:294] INFO 电流: 0.96
+Wed, 27 Apr 2016 09:07:16 pwrmeter.py[line:298] INFO 成功发送数据到中国移动物联网服务器
+Wed, 27 Apr 2016 09:07:16 connectionpool.py[line:207] INFO Starting new HTTP connection (1): www.lewei50.com
+Wed, 27 Apr 2016 09:07:16 connectionpool.py[line:387] DEBUG "POST /api/v1/gateway/updatesensors/02 HTTP/1.1" 200 44
+Wed, 27 Apr 2016 09:07:16 pwrmeter.py[line:248] INFO 电流: 0.96
+Wed, 27 Apr 2016 09:07:16 pwrmeter.py[line:252] INFO 成功发送到乐为服务器。
+Wed, 27 Apr 2016 09:07:18 connectionpool.py[line:207] INFO Starting new HTTP connection (1): api.heclouds.com
+Wed, 27 Apr 2016 09:07:18 connectionpool.py[line:387] DEBUG "POST /devices/1071322/datapoints?type=3 HTTP/1.1" 200 26
+Wed, 27 Apr 2016 09:07:19 pwrmeter.py[line:294] INFO 电流: 1.77
+Wed, 27 Apr 2016 09:07:19 pwrmeter.py[line:298] INFO 成功发送数据到中国移动物联网服务器
+Wed, 27 Apr 2016 09:07:21 connectionpool.py[line:207] INFO Starting new HTTP connection (1): api.heclouds.com
+Wed, 27 Apr 2016 09:07:21 connectionpool.py[line:387] DEBUG "POST /devices/1071322/datapoints?type=3 HTTP/1.1" 200 26
+Wed, 27 Apr 2016 09:07:21 pwrmeter.py[line:294] INFO 电流: 1.97
+Wed, 27 Apr 2016 09:07:21 pwrmeter.py[line:298] INFO 成功发送数据到中国移动物联网服务器
+Wed, 27 Apr 2016 09:07:23 connectionpool.py[line:207] INFO Starting new HTTP connection (1): api.heclouds.com
+Wed, 27 Apr 2016 09:07:24 connectionpool.py[line:387] DEBUG "POST /devices/1071322/datapoints?type=3 HTTP/1.1" 200 26
+Wed, 27 Apr 2016 09:07:24 pwrmeter.py[line:294] INFO 电流: 1.45
+Wed, 27 Apr 2016 09:07:24 pwrmeter.py[line:298] INFO 成功发送数据到中国移动物联网服务器
+Wed, 27 Apr 2016 09:07:26 connectionpool.py[line:207] INFO Starting new HTTP connection (1): api.heclouds.com
+Wed, 27 Apr 2016 09:07:26 connectionpool.py[line:387] DEBUG "POST /devices/1071322/datapoints?type=3 HTTP/1.1" 200 26
+Wed, 27 Apr 2016 09:07:26 pwrmeter.py[line:294] INFO 电流: 1.8
+Wed, 27 Apr 2016 09:07:26 pwrmeter.py[line:298] INFO 成功发送数据到中国移动物联网服务器
+Wed, 27 Apr 2016 09:07:28 connectionpool.py[line:207] INFO Starting new HTTP connection (1): api.heclouds.com
+Wed, 27 Apr 2016 09:07:28 connectionpool.py[line:387] DEBUG "POST /devices/1071322/datapoints?type=3 HTTP/1.1" 200 26
+Wed, 27 Apr 2016 09:07:28 pwrmeter.py[line:294] INFO 电流: 1.38
+Wed, 27 Apr 2016 09:07:28 pwrmeter.py[line:298] INFO 成功发送数据到中国移动物联网服务器
+Wed, 27 Apr 2016 09:07:30 connectionpool.py[line:207] INFO Starting new HTTP connection (1): api.heclouds.com
+Wed, 27 Apr 2016 09:07:31 connectionpool.py[line:387] DEBUG "POST /devices/1071322/datapoints?type=3 HTTP/1.1" 200 26
+Wed, 27 Apr 2016 09:07:31 pwrmeter.py[line:294] INFO 电流: 1.96
+Wed, 27 Apr 2016 09:07:31 pwrmeter.py[line:298] INFO 成功发送数据到中国移动物联网服务器
+Wed, 27 Apr 2016 09:07:33 connectionpool.py[line:207] INFO Starting new HTTP connection (1): api.heclouds.com
+Wed, 27 Apr 2016 09:07:33 connectionpool.py[line:387] DEBUG "POST /devices/1071322/datapoints?type=3 HTTP/1.1" 200 26
+Wed, 27 Apr 2016 09:07:33 pwrmeter.py[line:294] INFO 电流: 0.91
+Wed, 27 Apr 2016 09:07:33 pwrmeter.py[line:298] INFO 成功发送数据到中国移动物联网服务器
+Wed, 27 Apr 2016 09:07:35 connectionpool.py[line:207] INFO Starting new HTTP connection (1): api.heclouds.com
+Wed, 27 Apr 2016 09:07:35 connectionpool.py[line:387] DEBUG "POST /devices/1071322/datapoints?type=3 HTTP/1.1" 200 26
+Wed, 27 Apr 2016 09:07:35 pwrmeter.py[line:294] INFO 电流: 0.92
+Wed, 27 Apr 2016 09:07:35 pwrmeter.py[line:298] INFO 成功发送数据到中国移动物联网服务器
+Wed, 27 Apr 2016 09:07:37 connectionpool.py[line:207] INFO Starting new HTTP connection (1): api.heclouds.com
+Wed, 27 Apr 2016 09:07:37 connectionpool.py[line:387] DEBUG "POST /devices/1071322/datapoints?type=3 HTTP/1.1" 200 26
+Wed, 27 Apr 2016 09:07:37 pwrmeter.py[line:294] INFO 电流: 0.92
+Wed, 27 Apr 2016 09:07:37 pwrmeter.py[line:298] INFO 成功发送数据到中国移动物联网服务器
+Wed, 27 Apr 2016 09:07:37 connectionpool.py[line:207] INFO Starting new HTTP connection (1): www.lewei50.com
+Wed, 27 Apr 2016 09:07:38 connectionpool.py[line:387] DEBUG "POST /api/v1/gateway/updatesensors/02 HTTP/1.1" 200 44
+Wed, 27 Apr 2016 09:07:38 pwrmeter.py[line:248] INFO 电流: 0.92
+Wed, 27 Apr 2016 09:07:38 pwrmeter.py[line:252] INFO 成功发送到乐为服务器。
+Wed, 27 Apr 2016 09:07:40 connectionpool.py[line:207] INFO Starting new HTTP connection (1): api.heclouds.com
+Wed, 27 Apr 2016 09:07:40 connectionpool.py[line:387] DEBUG "POST /devices/1071322/datapoints?type=3 HTTP/1.1" 200 26
+Wed, 27 Apr 2016 09:07:40 pwrmeter.py[line:294] INFO 电流: 0.91
+Wed, 27 Apr 2016 09:07:40 pwrmeter.py[line:298] INFO 成功发送数据到中国移动物联网服务器
+Wed, 27 Apr 2016 09:07:43 connectionpool.py[line:207] INFO Starting new HTTP connection (1): api.heclouds.com
+Wed, 27 Apr 2016 09:07:43 connectionpool.py[line:387] DEBUG "POST /devices/1071322/datapoints?type=3 HTTP/1.1" 200 26
+Wed, 27 Apr 2016 09:07:43 pwrmeter.py[line:294] INFO 电流: 0.91
+Wed, 27 Apr 2016 09:07:43 pwrmeter.py[line:298] INFO 成功发送数据到中国移动物联网服务器
+Wed, 27 Apr 2016 09:07:45 connectionpool.py[line:207] INFO Starting new HTTP connection (1): api.heclouds.com
+Wed, 27 Apr 2016 09:07:55 connectionpool.py[line:387] DEBUG "POST /devices/1071322/datapoints?type=3 HTTP/1.1" 200 26
+Wed, 27 Apr 2016 09:07:55 pwrmeter.py[line:294] INFO 电流: 0.91
+Wed, 27 Apr 2016 09:07:55 pwrmeter.py[line:298] INFO 成功发送数据到中国移动物联网服务器
+Wed, 27 Apr 2016 09:07:57 connectionpool.py[line:207] INFO Starting new HTTP connection (1): api.heclouds.com
+Wed, 27 Apr 2016 09:07:57 connectionpool.py[line:387] DEBUG "POST /devices/1071322/datapoints?type=3 HTTP/1.1" 200 26
+Wed, 27 Apr 2016 09:07:57 pwrmeter.py[line:294] INFO 电流: 0.93
+Wed, 27 Apr 2016 09:07:57 pwrmeter.py[line:298] INFO 成功发送数据到中国移动物联网服务器
+Wed, 27 Apr 2016 09:08:00 connectionpool.py[line:207] INFO Starting new HTTP connection (1): api.heclouds.com
+Wed, 27 Apr 2016 09:08:00 connectionpool.py[line:387] DEBUG "POST /devices/1071322/datapoints?type=3 HTTP/1.1" 200 26
+Wed, 27 Apr 2016 09:08:00 pwrmeter.py[line:294] INFO 电流: 0.94
+Wed, 27 Apr 2016 09:08:00 pwrmeter.py[line:298] INFO 成功发送数据到中国移动物联网服务器
+Wed, 27 Apr 2016 09:08:00 connectionpool.py[line:207] INFO Starting new HTTP connection (1): www.lewei50.com
+Wed, 27 Apr 2016 09:08:00 connectionpool.py[line:387] DEBUG "POST /api/v1/gateway/updatesensors/02 HTTP/1.1" 200 44
+Wed, 27 Apr 2016 09:08:00 pwrmeter.py[line:248] INFO 电流: 0.94
+Wed, 27 Apr 2016 09:08:00 pwrmeter.py[line:252] INFO 成功发送到乐为服务器。
+Wed, 27 Apr 2016 09:08:02 connectionpool.py[line:207] INFO Starting new HTTP connection (1): api.heclouds.com
+Wed, 27 Apr 2016 09:08:03 connectionpool.py[line:387] DEBUG "POST /devices/1071322/datapoints?type=3 HTTP/1.1" 200 26
+Wed, 27 Apr 2016 09:08:03 pwrmeter.py[line:294] INFO 电流: 0.91
+Wed, 27 Apr 2016 09:08:03 pwrmeter.py[line:298] INFO 成功发送数据到中国移动物联网服务器
+Wed, 27 Apr 2016 09:08:05 connectionpool.py[line:207] INFO Starting new HTTP connection (1): api.heclouds.com
+Wed, 27 Apr 2016 09:08:05 connectionpool.py[line:387] DEBUG "POST /devices/1071322/datapoints?type=3 HTTP/1.1" 200 26
+Wed, 27 Apr 2016 09:08:05 pwrmeter.py[line:294] INFO 电流: 0.91
+Wed, 27 Apr 2016 09:08:05 pwrmeter.py[line:298] INFO 成功发送数据到中国移动物联网服务器
+Wed, 27 Apr 2016 09:08:07 connectionpool.py[line:207] INFO Starting new HTTP connection (1): api.heclouds.com
+Wed, 27 Apr 2016 09:08:07 connectionpool.py[line:387] DEBUG "POST /devices/1071322/datapoints?type=3 HTTP/1.1" 200 26
+Wed, 27 Apr 2016 09:08:07 pwrmeter.py[line:294] INFO 电流: 0.91
+Wed, 27 Apr 2016 09:08:07 pwrmeter.py[line:298] INFO 成功发送数据到中国移动物联网服务器
+Wed, 27 Apr 2016 09:08:09 connectionpool.py[line:207] INFO Starting new HTTP connection (1): api.heclouds.com
+Wed, 27 Apr 2016 09:08:09 connectionpool.py[line:387] DEBUG "POST /devices/1071322/datapoints?type=3 HTTP/1.1" 200 26
+Wed, 27 Apr 2016 09:08:10 pwrmeter.py[line:294] INFO 电流: 0.93
+Wed, 27 Apr 2016 09:08:10 pwrmeter.py[line:298] INFO 成功发送数据到中国移动物联网服务器
+Wed, 27 Apr 2016 09:08:12 connectionpool.py[line:207] INFO Starting new HTTP connection (1): api.heclouds.com
+Wed, 27 Apr 2016 09:08:12 connectionpool.py[line:387] DEBUG "POST /devices/1071322/datapoints?type=3 HTTP/1.1" 200 26
+Wed, 27 Apr 2016 09:08:12 pwrmeter.py[line:294] INFO 电流: 0.97
+Wed, 27 Apr 2016 09:08:12 pwrmeter.py[line:298] INFO 成功发送数据到中国移动物联网服务器
+Wed, 27 Apr 2016 09:08:14 connectionpool.py[line:207] INFO Starting new HTTP connection (1): api.heclouds.com
+Wed, 27 Apr 2016 09:08:14 connectionpool.py[line:387] DEBUG "POST /devices/1071322/datapoints?type=3 HTTP/1.1" 200 26
+Wed, 27 Apr 2016 09:08:14 pwrmeter.py[line:294] INFO 电流: 0.92
+Wed, 27 Apr 2016 09:08:14 pwrmeter.py[line:298] INFO 成功发送数据到中国移动物联网服务器
+Wed, 27 Apr 2016 09:08:16 connectionpool.py[line:207] INFO Starting new HTTP connection (1): api.heclouds.com
+Wed, 27 Apr 2016 09:08:16 connectionpool.py[line:387] DEBUG "POST /devices/1071322/datapoints?type=3 HTTP/1.1" 200 26
+Wed, 27 Apr 2016 09:08:16 pwrmeter.py[line:294] INFO 电流: 0.97
+Wed, 27 Apr 2016 09:08:16 pwrmeter.py[line:298] INFO 成功发送数据到中国移动物联网服务器
+Wed, 27 Apr 2016 09:08:19 connectionpool.py[line:207] INFO Starting new HTTP connection (1): api.heclouds.com
+Wed, 27 Apr 2016 09:08:19 connectionpool.py[line:387] DEBUG "POST /devices/1071322/datapoints?type=3 HTTP/1.1" 200 26
+Wed, 27 Apr 2016 09:08:19 pwrmeter.py[line:294] INFO 电流: 0.91
+Wed, 27 Apr 2016 09:08:19 pwrmeter.py[line:298] INFO 成功发送数据到中国移动物联网服务器
+Wed, 27 Apr 2016 09:08:21 connectionpool.py[line:207] INFO Starting new HTTP connection (1): api.heclouds.com
+Wed, 27 Apr 2016 09:08:21 connectionpool.py[line:387] DEBUG "POST /devices/1071322/datapoints?type=3 HTTP/1.1" 200 26
+Wed, 27 Apr 2016 09:08:21 pwrmeter.py[line:294] INFO 电流: 0.92
+Wed, 27 Apr 2016 09:08:21 pwrmeter.py[line:298] INFO 成功发送数据到中国移动物联网服务器
+Wed, 27 Apr 2016 09:08:21 connectionpool.py[line:207] INFO Starting new HTTP connection (1): www.lewei50.com
+Wed, 27 Apr 2016 09:08:21 connectionpool.py[line:387] DEBUG "POST /api/v1/gateway/updatesensors/02 HTTP/1.1" 200 44
+Wed, 27 Apr 2016 09:08:22 pwrmeter.py[line:248] INFO 电流: 0.92
+Wed, 27 Apr 2016 09:08:22 pwrmeter.py[line:252] INFO 成功发送到乐为服务器。
+Wed, 27 Apr 2016 09:08:24 connectionpool.py[line:207] INFO Starting new HTTP connection (1): api.heclouds.com
+Wed, 27 Apr 2016 09:08:24 connectionpool.py[line:387] DEBUG "POST /devices/1071322/datapoints?type=3 HTTP/1.1" 200 26
+Wed, 27 Apr 2016 09:08:24 pwrmeter.py[line:294] INFO 电流: 0.91
+Wed, 27 Apr 2016 09:08:24 pwrmeter.py[line:298] INFO 成功发送数据到中国移动物联网服务器
+Wed, 27 Apr 2016 09:08:26 connectionpool.py[line:207] INFO Starting new HTTP connection (1): api.heclouds.com
+Wed, 27 Apr 2016 09:08:26 connectionpool.py[line:387] DEBUG "POST /devices/1071322/datapoints?type=3 HTTP/1.1" 200 26
+Wed, 27 Apr 2016 09:08:26 pwrmeter.py[line:294] INFO 电流: 0.99
+Wed, 27 Apr 2016 09:08:26 pwrmeter.py[line:298] INFO 成功发送数据到中国移动物联网服务器
+Wed, 27 Apr 2016 09:08:28 connectionpool.py[line:207] INFO Starting new HTTP connection (1): api.heclouds.com
+Wed, 27 Apr 2016 09:08:28 connectionpool.py[line:387] DEBUG "POST /devices/1071322/datapoints?type=3 HTTP/1.1" 200 26
+Wed, 27 Apr 2016 09:08:28 pwrmeter.py[line:294] INFO 电流: 0.91
+Wed, 27 Apr 2016 09:08:28 pwrmeter.py[line:298] INFO 成功发送数据到中国移动物联网服务器
+Wed, 27 Apr 2016 09:08:31 connectionpool.py[line:207] INFO Starting new HTTP connection (1): api.heclouds.com
+Wed, 27 Apr 2016 09:08:31 connectionpool.py[line:387] DEBUG "POST /devices/1071322/datapoints?type=3 HTTP/1.1" 200 26
+Wed, 27 Apr 2016 09:08:31 pwrmeter.py[line:294] INFO 电流: 0.92
+Wed, 27 Apr 2016 09:08:31 pwrmeter.py[line:298] INFO 成功发送数据到中国移动物联网服务器
+Wed, 27 Apr 2016 09:08:33 connectionpool.py[line:207] INFO Starting new HTTP connection (1): api.heclouds.com
+Wed, 27 Apr 2016 09:08:33 connectionpool.py[line:387] DEBUG "POST /devices/1071322/datapoints?type=3 HTTP/1.1" 200 26
+Wed, 27 Apr 2016 09:08:33 pwrmeter.py[line:294] INFO 电流: 0.92
+Wed, 27 Apr 2016 09:08:33 pwrmeter.py[line:298] INFO 成功发送数据到中国移动物联网服务器
+Wed, 27 Apr 2016 09:08:35 connectionpool.py[line:207] INFO Starting new HTTP connection (1): api.heclouds.com
+Wed, 27 Apr 2016 09:08:45 connectionpool.py[line:387] DEBUG "POST /devices/1071322/datapoints?type=3 HTTP/1.1" 200 26
+Wed, 27 Apr 2016 09:08:45 pwrmeter.py[line:294] INFO 电流: 0.92
+Wed, 27 Apr 2016 09:08:45 pwrmeter.py[line:298] INFO 成功发送数据到中国移动物联网服务器
+Wed, 27 Apr 2016 09:08:48 connectionpool.py[line:207] INFO Starting new HTTP connection (1): api.heclouds.com
+Wed, 27 Apr 2016 09:08:48 connectionpool.py[line:387] DEBUG "POST /devices/1071322/datapoints?type=3 HTTP/1.1" 200 26
+Wed, 27 Apr 2016 09:08:48 pwrmeter.py[line:294] INFO 电流: 0.94
+Wed, 27 Apr 2016 09:08:48 pwrmeter.py[line:298] INFO 成功发送数据到中国移动物联网服务器
+Wed, 27 Apr 2016 09:08:48 connectionpool.py[line:207] INFO Starting new HTTP connection (1): www.lewei50.com
+Wed, 27 Apr 2016 09:08:48 connectionpool.py[line:387] DEBUG "POST /api/v1/gateway/updatesensors/02 HTTP/1.1" 200 44
+Wed, 27 Apr 2016 09:08:48 pwrmeter.py[line:248] INFO 电流: 0.94
+Wed, 27 Apr 2016 09:08:48 pwrmeter.py[line:252] INFO 成功发送到乐为服务器。
+Wed, 27 Apr 2016 09:08:50 connectionpool.py[line:207] INFO Starting new HTTP connection (1): api.heclouds.com
+Wed, 27 Apr 2016 09:08:51 connectionpool.py[line:387] DEBUG "POST /devices/1071322/datapoints?type=3 HTTP/1.1" 200 26
+Wed, 27 Apr 2016 09:08:51 pwrmeter.py[line:294] INFO 电流: 0.94
+Wed, 27 Apr 2016 09:08:51 pwrmeter.py[line:298] INFO 成功发送数据到中国移动物联网服务器
+Wed, 27 Apr 2016 09:08:53 connectionpool.py[line:207] INFO Starting new HTTP connection (1): api.heclouds.com
+Wed, 27 Apr 2016 09:08:53 connectionpool.py[line:387] DEBUG "POST /devices/1071322/datapoints?type=3 HTTP/1.1" 200 26
+Wed, 27 Apr 2016 09:08:53 pwrmeter.py[line:294] INFO 电流: 0.92
+Wed, 27 Apr 2016 09:08:53 pwrmeter.py[line:298] INFO 成功发送数据到中国移动物联网服务器
+Wed, 27 Apr 2016 09:08:55 connectionpool.py[line:207] INFO Starting new HTTP connection (1): api.heclouds.com
+Wed, 27 Apr 2016 09:08:55 connectionpool.py[line:387] DEBUG "POST /devices/1071322/datapoints?type=3 HTTP/1.1" 200 26
+Wed, 27 Apr 2016 09:08:55 pwrmeter.py[line:294] INFO 电流: 0.91
+Wed, 27 Apr 2016 09:08:55 pwrmeter.py[line:298] INFO 成功发送数据到中国移动物联网服务器
+Wed, 27 Apr 2016 09:08:57 connectionpool.py[line:207] INFO Starting new HTTP connection (1): api.heclouds.com
+Wed, 27 Apr 2016 09:08:57 connectionpool.py[line:387] DEBUG "POST /devices/1071322/datapoints?type=3 HTTP/1.1" 200 26
+Wed, 27 Apr 2016 09:08:57 pwrmeter.py[line:294] INFO 电流: 0.91
+Wed, 27 Apr 2016 09:08:57 pwrmeter.py[line:298] INFO 成功发送数据到中国移动物联网服务器
+Wed, 27 Apr 2016 09:09:00 connectionpool.py[line:207] INFO Starting new HTTP connection (1): api.heclouds.com
+Wed, 27 Apr 2016 09:09:00 connectionpool.py[line:387] DEBUG "POST /devices/1071322/datapoints?type=3 HTTP/1.1" 200 26
+Wed, 27 Apr 2016 09:09:00 pwrmeter.py[line:294] INFO 电流: 0.93
+Wed, 27 Apr 2016 09:09:00 pwrmeter.py[line:298] INFO 成功发送数据到中国移动物联网服务器
+Wed, 27 Apr 2016 09:09:02 connectionpool.py[line:207] INFO Starting new HTTP connection (1): api.heclouds.com
+Wed, 27 Apr 2016 09:09:02 connectionpool.py[line:387] DEBUG "POST /devices/1071322/datapoints?type=3 HTTP/1.1" 200 26
+Wed, 27 Apr 2016 09:09:02 pwrmeter.py[line:294] INFO 电流: 0.94
+Wed, 27 Apr 2016 09:09:02 pwrmeter.py[line:298] INFO 成功发送数据到中国移动物联网服务器
+Wed, 27 Apr 2016 09:09:04 connectionpool.py[line:207] INFO Starting new HTTP connection (1): api.heclouds.com
+Wed, 27 Apr 2016 09:09:04 connectionpool.py[line:387] DEBUG "POST /devices/1071322/datapoints?type=3 HTTP/1.1" 200 26
+Wed, 27 Apr 2016 09:09:04 pwrmeter.py[line:294] INFO 电流: 0.92
+Wed, 27 Apr 2016 09:09:04 pwrmeter.py[line:298] INFO 成功发送数据到中国移动物联网服务器
+Wed, 27 Apr 2016 09:09:07 connectionpool.py[line:207] INFO Starting new HTTP connection (1): api.heclouds.com
+Wed, 27 Apr 2016 09:09:07 connectionpool.py[line:387] DEBUG "POST /devices/1071322/datapoints?type=3 HTTP/1.1" 200 26
+Wed, 27 Apr 2016 09:09:07 pwrmeter.py[line:294] INFO 电流: 0.94
+Wed, 27 Apr 2016 09:09:07 pwrmeter.py[line:298] INFO 成功发送数据到中国移动物联网服务器
+Wed, 27 Apr 2016 09:09:09 connectionpool.py[line:207] INFO Starting new HTTP connection (1): api.heclouds.com
+Wed, 27 Apr 2016 09:09:09 connectionpool.py[line:387] DEBUG "POST /devices/1071322/datapoints?type=3 HTTP/1.1" 200 26
+Wed, 27 Apr 2016 09:09:09 pwrmeter.py[line:294] INFO 电流: 0.92
+Wed, 27 Apr 2016 09:09:09 pwrmeter.py[line:298] INFO 成功发送数据到中国移动物联网服务器
+Wed, 27 Apr 2016 09:09:09 connectionpool.py[line:207] INFO Starting new HTTP connection (1): www.lewei50.com
+Wed, 27 Apr 2016 09:09:09 connectionpool.py[line:387] DEBUG "POST /api/v1/gateway/updatesensors/02 HTTP/1.1" 200 44
+Wed, 27 Apr 2016 09:09:10 pwrmeter.py[line:248] INFO 电流: 0.92
+Wed, 27 Apr 2016 09:09:10 pwrmeter.py[line:252] INFO 成功发送到乐为服务器。
+Wed, 27 Apr 2016 09:09:12 connectionpool.py[line:207] INFO Starting new HTTP connection (1): api.heclouds.com
+Wed, 27 Apr 2016 09:09:19 connectionpool.py[line:387] DEBUG "POST /devices/1071322/datapoints?type=3 HTTP/1.1" 200 26
+Wed, 27 Apr 2016 09:09:19 pwrmeter.py[line:294] INFO 电流: 0.92
+Wed, 27 Apr 2016 09:09:19 pwrmeter.py[line:298] INFO 成功发送数据到中国移动物联网服务器
+Wed, 27 Apr 2016 09:09:21 connectionpool.py[line:207] INFO Starting new HTTP connection (1): api.heclouds.com
+Wed, 27 Apr 2016 09:09:21 connectionpool.py[line:387] DEBUG "POST /devices/1071322/datapoints?type=3 HTTP/1.1" 200 26
+Wed, 27 Apr 2016 09:09:21 pwrmeter.py[line:294] INFO 电流: 0.93
+Wed, 27 Apr 2016 09:09:21 pwrmeter.py[line:298] INFO 成功发送数据到中国移动物联网服务器
+Wed, 27 Apr 2016 09:09:23 connectionpool.py[line:207] INFO Starting new HTTP connection (1): api.heclouds.com
+Wed, 27 Apr 2016 09:09:24 connectionpool.py[line:387] DEBUG "POST /devices/1071322/datapoints?type=3 HTTP/1.1" 200 26
+Wed, 27 Apr 2016 09:09:24 pwrmeter.py[line:294] INFO 电流: 0.92
+Wed, 27 Apr 2016 09:09:24 pwrmeter.py[line:298] INFO 成功发送数据到中国移动物联网服务器
+Wed, 27 Apr 2016 09:09:26 connectionpool.py[line:207] INFO Starting new HTTP connection (1): api.heclouds.com
+Wed, 27 Apr 2016 09:09:26 connectionpool.py[line:387] DEBUG "POST /devices/1071322/datapoints?type=3 HTTP/1.1" 200 26
+Wed, 27 Apr 2016 09:09:26 pwrmeter.py[line:294] INFO 电流: 0.93
+Wed, 27 Apr 2016 09:09:26 pwrmeter.py[line:298] INFO 成功发送数据到中国移动物联网服务器
+Wed, 27 Apr 2016 09:09:28 connectionpool.py[line:207] INFO Starting new HTTP connection (1): api.heclouds.com
+Wed, 27 Apr 2016 09:09:28 connectionpool.py[line:387] DEBUG "POST /devices/1071322/datapoints?type=3 HTTP/1.1" 200 26
+Wed, 27 Apr 2016 09:09:28 pwrmeter.py[line:294] INFO 电流: 0.92
+Wed, 27 Apr 2016 09:09:28 pwrmeter.py[line:298] INFO 成功发送数据到中国移动物联网服务器
+Wed, 27 Apr 2016 09:09:30 connectionpool.py[line:207] INFO Starting new HTTP connection (1): api.heclouds.com
+Wed, 27 Apr 2016 09:09:30 connectionpool.py[line:387] DEBUG "POST /devices/1071322/datapoints?type=3 HTTP/1.1" 200 26
+Wed, 27 Apr 2016 09:09:30 pwrmeter.py[line:294] INFO 电流: 0.94
+Wed, 27 Apr 2016 09:09:30 pwrmeter.py[line:298] INFO 成功发送数据到中国移动物联网服务器
+Wed, 27 Apr 2016 09:09:30 connectionpool.py[line:207] INFO Starting new HTTP connection (1): www.lewei50.com
+Wed, 27 Apr 2016 09:09:31 connectionpool.py[line:387] DEBUG "POST /api/v1/gateway/updatesensors/02 HTTP/1.1" 200 44
+Wed, 27 Apr 2016 09:09:31 pwrmeter.py[line:248] INFO 电流: 0.94
+Wed, 27 Apr 2016 09:09:31 pwrmeter.py[line:252] INFO 成功发送到乐为服务器。
+Wed, 27 Apr 2016 09:09:33 connectionpool.py[line:207] INFO Starting new HTTP connection (1): api.heclouds.com
+Wed, 27 Apr 2016 09:09:34 connectionpool.py[line:387] DEBUG "POST /devices/1071322/datapoints?type=3 HTTP/1.1" 200 26
+Wed, 27 Apr 2016 09:09:34 pwrmeter.py[line:294] INFO 电流: 0.95
+Wed, 27 Apr 2016 09:09:34 pwrmeter.py[line:298] INFO 成功发送数据到中国移动物联网服务器
+Wed, 27 Apr 2016 09:09:36 connectionpool.py[line:207] INFO Starting new HTTP connection (1): api.heclouds.com
+Wed, 27 Apr 2016 09:09:44 connectionpool.py[line:387] DEBUG "POST /devices/1071322/datapoints?type=3 HTTP/1.1" 200 26
+Wed, 27 Apr 2016 09:09:44 pwrmeter.py[line:294] INFO 电流: 0.93
+Wed, 27 Apr 2016 09:09:44 pwrmeter.py[line:298] INFO 成功发送数据到中国移动物联网服务器
+Wed, 27 Apr 2016 09:09:46 connectionpool.py[line:207] INFO Starting new HTTP connection (1): api.heclouds.com
+Wed, 27 Apr 2016 09:09:46 connectionpool.py[line:387] DEBUG "POST /devices/1071322/datapoints?type=3 HTTP/1.1" 200 26
+Wed, 27 Apr 2016 09:09:46 pwrmeter.py[line:294] INFO 电流: 0.92
+Wed, 27 Apr 2016 09:09:46 pwrmeter.py[line:298] INFO 成功发送数据到中国移动物联网服务器
+Wed, 27 Apr 2016 09:09:48 connectionpool.py[line:207] INFO Starting new HTTP connection (1): api.heclouds.com
+Wed, 27 Apr 2016 09:09:48 connectionpool.py[line:387] DEBUG "POST /devices/1071322/datapoints?type=3 HTTP/1.1" 200 26
+Wed, 27 Apr 2016 09:09:48 pwrmeter.py[line:294] INFO 电流: 0.94
+Wed, 27 Apr 2016 09:09:48 pwrmeter.py[line:298] INFO 成功发送数据到中国移动物联网服务器
+Wed, 27 Apr 2016 09:09:50 connectionpool.py[line:207] INFO Starting new HTTP connection (1): api.heclouds.com
+Wed, 27 Apr 2016 09:09:50 connectionpool.py[line:387] DEBUG "POST /devices/1071322/datapoints?type=3 HTTP/1.1" 200 26
+Wed, 27 Apr 2016 09:09:50 pwrmeter.py[line:294] INFO 电流: 0.95
+Wed, 27 Apr 2016 09:09:50 pwrmeter.py[line:298] INFO 成功发送数据到中国移动物联网服务器
+Wed, 27 Apr 2016 09:09:53 connectionpool.py[line:207] INFO Starting new HTTP connection (1): api.heclouds.com
+Wed, 27 Apr 2016 09:09:53 connectionpool.py[line:387] DEBUG "POST /devices/1071322/datapoints?type=3 HTTP/1.1" 200 26
+Wed, 27 Apr 2016 09:09:53 pwrmeter.py[line:294] INFO 电流: 0.95
+Wed, 27 Apr 2016 09:09:53 pwrmeter.py[line:298] INFO 成功发送数据到中国移动物联网服务器
+Wed, 27 Apr 2016 09:09:53 connectionpool.py[line:207] INFO Starting new HTTP connection (1): www.lewei50.com
+Wed, 27 Apr 2016 09:09:53 connectionpool.py[line:387] DEBUG "POST /api/v1/gateway/updatesensors/02 HTTP/1.1" 200 44
+Wed, 27 Apr 2016 09:09:53 pwrmeter.py[line:248] INFO 电流: 0.95
+Wed, 27 Apr 2016 09:09:53 pwrmeter.py[line:252] INFO 成功发送到乐为服务器。
+Wed, 27 Apr 2016 09:09:55 connectionpool.py[line:207] INFO Starting new HTTP connection (1): api.heclouds.com
+Wed, 27 Apr 2016 09:09:55 connectionpool.py[line:387] DEBUG "POST /devices/1071322/datapoints?type=3 HTTP/1.1" 200 26
+Wed, 27 Apr 2016 09:09:55 pwrmeter.py[line:294] INFO 电流: 0.92
+Wed, 27 Apr 2016 09:09:55 pwrmeter.py[line:298] INFO 成功发送数据到中国移动物联网服务器

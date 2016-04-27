@@ -90,6 +90,9 @@ def samplingPower(slave,register):
     kwh=0.0
     pf=0.0
     err=0 #错误代码
+
+    global mdErrcounts
+
     try:
         powerMeter = minimalmodbus.Instrument('/dev/ttyS1',slave)
         powerMeter.serial.baudrate=4800
@@ -160,6 +163,8 @@ def postdata(api,key,header,data):
     '''POST数据到指定IOT服务器'''
     
     global 	errCounts
+    global      nwErrcounts
+
     respCode	=	0
     respText	=	' '
     errCode		=	0
