@@ -32,6 +32,7 @@ DEBUG_MODE  =   True     #debug mode
 
 REDPin      =   "gpio7"
 BLUEPin     =   "gpio8"
+GREENPin    =   "gpio9"
 
 #判断POST操作成功的标识
 hmTrueFlag = '{"errno":0,"error":"succ"}'
@@ -175,7 +176,9 @@ def postdata(api,key,header,data):
 		respCode	=	r.status_code
 		respText	=	r.text
 		errCode		=	0
-        #return r.status_code, r.text
+
+                doNormalPost()
+                #return r.status_code, r.text
 
     except requests.ConnectionError,e:
         if (DEBUG_MODE):
@@ -320,13 +323,18 @@ def test():
     return vol,amp,w,kwh,pf,err
 
 
+def doNormalPost(t=0.5):
+    gpio.digitalWrite(GREENPin,gpio.LOW)
+    time.sleep(t)
+    gpio.digitalWrite(GREENPin,gpio.HIGH)
+
 #================main proc===========================
 def main():
     print '初始化设备...' 
     t0=time.time()
     
 
-    logging.basicConfig(level=logging.DEBUG,
+    logging.basicConfig(level=logging.WARNING,
 					format='%(asctime)s %(filename)s[line:%(lineno)d] %(levelname)s %(message)s',
 					datefmt='%a, %d %b %Y %H:%M:%S',
 					filename='pwrinfo.log',
@@ -339,10 +347,15 @@ def main():
 
     gpio.pinMode(BLUEPin, gpio.OUTPUT)
     gpio.pinMode(REDPin, gpio.OUTPUT)
+    gpio.pinMode(GREENPin,gpio.OUTPUT)
+     
     doModbusErr()
-    time.sleep(0.5)
-    doNetworkErr()
-    time.sleep(0.5)
+    doNetworkErr() 
+    doNormalPost(0.1)
+    #doModbusErr()
+    #time.sleep(0.1)
+    #doNetworkErr()
+    #time.sleep(0.1)
     doModbusNormal()
     doNetworkNormal()
     time.sleep(10)  #设备初始化
@@ -359,7 +372,7 @@ def main():
         if ((t1-t0)>20):
              postDataToLewei(values[0],values[1],values[2],values[3],values[4],values[5])
              t0=time.time()
-        time.sleep(2)
+        time.sleep(0.5)
 
             
  
