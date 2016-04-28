@@ -337,7 +337,7 @@ def main():
     logging.basicConfig(level=logging.WARNING,
 					format='%(asctime)s %(filename)s[line:%(lineno)d] %(levelname)s %(message)s',
 					datefmt='%a, %d %b %Y %H:%M:%S',
-					filename='pwrinfo.log',
+					filename='/var/log/pwrinfo.log',
 					filemode='w')
 		
     logging.debug('调试模式')
