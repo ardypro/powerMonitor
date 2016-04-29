@@ -80,9 +80,9 @@ def doModbusNormal():
 
 def samplingPower(slave,register):
     '采集电量'
-    #if (DEBUG_MODE):
-    #   values= test()
-    #    return values
+    if (DEBUG_MODE):
+       values= test()
+       return values
 
     #define variable to host power info
     v=0.0
@@ -313,12 +313,12 @@ def test():
     import random
 
     pf=random.random()
-    vol=random.randrange(210,240)
-    amp=random.randrange(1,60)
+    vol=random.randrange(220,235)
+    amp=random.randrange(1,15)
 
     w=vol*amp*pf
     kwh=0
-    err=0
+    err=random.randrange(0,2)
 
     return vol,amp,w,kwh,pf,err
 
@@ -370,7 +370,7 @@ def main():
         values=samplingPower(1,72)
         postDataToOneNet(values[0],values[1],values[2],values[3],values[4],values[5])
         if ((t1-t0)>20):
-             #postDataToLewei(values[0],values[1],values[2],values[3],values[4],values[5])
+             postDataToLewei(values[0],values[1],values[2],values[3],values[4],values[5])
              t0=time.time()
         time.sleep(0.5)
 
