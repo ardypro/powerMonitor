@@ -25,7 +25,7 @@ import gpio
 import logging
 import logging.config
 
-version_str =   '1.3'
+version_str =   '1.3.1'
 
 errCounts   =   0     #err counts, if it reaches 5, then reboot the board
 DEBUG_MODE  =   True     #debug mode
@@ -34,6 +34,7 @@ REDPin      =   "gpio7"
 BLUEPin     =   "gpio8"
 GREENPin    =   "gpio9"
 
+serialPort  =   "/dev/ttyS1"
 #判断POST操作成功的标识
 hmTrueFlag = '{"errno":0,"error":"succ"}'
 lwTrueFlag='{"Successful":true,"Message":"Successful. "}'
@@ -49,7 +50,7 @@ def reboot():
 	
 	
 def clearKwh(slave):
-    pwrMeter=minimalmodbus.Instrument('/dev/ttyS1',slave)
+    pwrMeter=minimalmodbus.Instrument(serialPort, slave)
     pwrMeter.serial.baudrate=4800
     pwrMeter.serial.timeout=5
     pwrMeter.write_registers(12,[0,0])
@@ -80,9 +81,10 @@ def doModbusNormal():
 
 def samplingPower(slave,register):
     '采集电量'
-    if (DEBUG_MODE):
-       values= test()
-       return values
+    #if (DEBUG_MODE):
+    
+    #values= test()
+    #   return values
 
     #define variable to host power info
     v=0.0
@@ -91,7 +93,8 @@ def samplingPower(slave,register):
     kwh=0.0
     pf=0.0
     err=0 #错误代码
-
+    hi=0.0
+    low=0.0
     global mdErrcounts
 
     try:
@@ -112,8 +115,12 @@ def samplingPower(slave,register):
             w=powerInfo[2]/ 1.0
             hi=powerInfo[3]
             low=powerInfo[4]
-            hi<<8
-            kwh=round( (hi+low) /3200.0,4)    
+            
+
+  	    #print 'low:\t', low
+	    #print 'hi:\t', hi
+		
+	    kwh=round( (hi * 65536 + low) /3200.0,4)    
             pf=powerInfo[5]/1000.0
             err=0
 
@@ -157,7 +164,7 @@ def samplingPower(slave,register):
 			if (mdErrcounts>=10):
 				reboot()
 			
-    return v,a,w,kwh,pf,err
+    return v,a,w,kwh,pf,err,hi,low
 
 
 def postdata(api,key,header,data):
@@ -359,7 +366,7 @@ def main():
     doModbusNormal()
     doNetworkNormal()
     time.sleep(10)  #设备初始化
-
+    clearKwh(1)
     print '设备初始化完毕'
     
     while (True):

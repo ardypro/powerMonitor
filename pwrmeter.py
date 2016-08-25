@@ -25,7 +25,7 @@ import gpio
 import logging
 import logging.config
 
-version_str =   '1.3'
+version_str =   '1.3.1'
 
 errCounts   =   0     #err counts, if it reaches 5, then reboot the board
 DEBUG_MODE  =   True     #debug mode
@@ -91,6 +91,8 @@ def samplingPower(slave,register):
     kwh=0.0
     pf=0.0
     err=0 #错误代码
+    hi=0.0
+    low=0.0
 
     global mdErrcounts
 
@@ -112,8 +114,8 @@ def samplingPower(slave,register):
             w=powerInfo[2]/ 1.0
             hi=powerInfo[3]
             low=powerInfo[4]
-            hi<<8
-            kwh=round( (hi+low) /3200.0,4)    
+            #hi<< 16
+            kwh=round( (long(hi*65536)+low) /3200.00,2)    
             pf=powerInfo[5]/1000.0
             err=0
 
@@ -157,7 +159,7 @@ def samplingPower(slave,register):
 			if (mdErrcounts>=10):
 				reboot()
 			
-    return v,a,w,kwh,pf,err
+    return v,a,w,kwh,pf,err,hi,low
 
 
 def postdata(api,key,header,data):
@@ -177,8 +179,8 @@ def postdata(api,key,header,data):
 		respText	=	r.text
 		errCode		=	0
 
-                doNormalPost()
-                #return r.status_code, r.text
+        doNormalPost()
+        #return r.status_code, r.text
 
     except requests.ConnectionError,e:
         if (DEBUG_MODE):
@@ -261,7 +263,7 @@ def postDataToLewei(v,a,w,kwh,pf,err):
 
 
 
-def postDataToOneNet(v,a,w,kwh,pf,err):
+def postDataToOneNet(v,a,w,kwh,pf,err,hi,low):
     '''发送采集到的数据到onenet.10086.cn'''
     if (v<=0.001):		#采集到的电压为0，由于模块是有被采样电路供电，所以采集到0V电压是错误的
     	doModbusErr()
@@ -269,7 +271,7 @@ def postDataToOneNet(v,a,w,kwh,pf,err):
     	
     hm_api='http://api.heclouds.com/devices/1071322/datapoints?type=3'
     hm_api_key='YPjeEHaQKQA0aholzHpROJI4CCc='
-    payload={'Voltage':v, 'Amp':a, 'WATT':w, 'TotalKWh':kwh, 'P_Rate':pf, 'err':err}
+    payload={'Voltage':v, 'Amp':a, 'WATT':w, 'TotalKWh':kwh, 'P_Rate':pf, 'err':err,"hi":hi, "low":low}
     _data=json.dumps(payload)
     _headers={'api-key':hm_api_key}
 
@@ -287,6 +289,8 @@ def postDataToOneNet(v,a,w,kwh,pf,err):
 		print  '有功功率:  \t', w
 		print  '电能:     \t', kwh
 		print  '功率因素： \t', pf
+		print  'hi:        \t', hi
+		print  'low:       \t', low
 		print " " 
 		print code
 		print text
@@ -352,10 +356,7 @@ def main():
     doModbusErr()
     doNetworkErr() 
     doNormalPost(0.1)
-    #doModbusErr()
-    #time.sleep(0.1)
-    #doNetworkErr()
-    #time.sleep(0.1)
+
     doModbusNormal()
     doNetworkNormal()
     time.sleep(10)  #设备初始化
@@ -368,13 +369,12 @@ def main():
         t1=time.time()
 
         values=samplingPower(1,72)
-        postDataToOneNet(values[0],values[1],values[2],values[3],values[4],values[5])
+        postDataToOneNet(values[0],values[1],values[2],values[3],values[4],values[5],values[6], values[7])
         if ((t1-t0)>20):
-             #postDataToLewei(values[0],values[1],values[2],values[3],values[4],values[5])
+             postDataToLewei(values[0],values[1],values[2],values[3],values[4],values[5])
              t0=time.time()
         time.sleep(0.5)
 
-            
  
 
 if __name__=='__main__':
