@@ -295,7 +295,14 @@ def postDataToOneNet(v,a,w,kwh,pf,err,hi,low):
         return False	
 
 
-
+def clearKwh(slave):
+    pwrMeter=minimalmodbus.Instrument('/dev/ttyS1',slave)
+    pwrMeter.serial.baudrate=4800
+    pwrMeter.serial.timeout=5
+    pwrMeter.write_registers(12,[0,0])
+    
+    
+    
 
 #test
 def test():
@@ -323,6 +330,14 @@ def doNormalPost(t=0.5):
 import sys
 
 def main():
+	'''
+		参数：
+			TEST	测试模式，数据由随机数产生器产生
+			DEBUG	调试模式，真实数据，但是同时打印到屏幕
+			RESET	先执行reset()，初始化数据，然后开始数据
+
+	
+	'''
     print '初始化设备...' 
     t0=time.time()
     
@@ -368,5 +383,7 @@ def main():
 
  
 
+    
+    
 if __name__=='__main__':
     main()
