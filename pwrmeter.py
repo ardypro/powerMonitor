@@ -363,26 +363,36 @@ def doNormalPost(t=0.5):
 
 
 
-
-
 #================main proc===========================
 
 import sys
 
 def main():
-	'''
-		参数：
-			TEST	测试模式，数据由随机数产生器产生
-			DEBUG	调试模式，真实数据，但是同时打印到屏幕
-			RESET	先执行reset()，初始化数据，然后开始数据
+    '''
+        参数：
+            TEST	测试模式，数据由随机数产生器产生
+            DEBUG	调试模式，真实数据，但是同时打印到屏幕
+            RESET	先执行reset()，初始化数据，然后开始数据
 
 	
-	'''
-    print '初始化设备...' 
+    '''
+    print '初始化设备...'
     t0=time.time()
-    
-    if len(sys.argv) >=2:
-        DEBUG_MODE = (sys.argv[1].upper() == 'DEBUG')
+
+    count =  len(sys.argv)
+    if count >1:
+        mode = sys.argv[1].lower()
+        if mode == 'test':
+            TEST_MODE = True
+        else:
+            if mode == 'debug':
+                DEBUG_MODE = True
+            else:
+                DEBUG_MODE = False
+                TEST_MODE = False
+    else:
+        DEBUG_MODE = False
+        TEST_MODE = False
 
     logging.basicConfig(level=logging.WARNING,
 					format='%(asctime)s %(filename)s[line:%(lineno)d] %(levelname)s %(message)s',
@@ -426,19 +436,4 @@ def main():
     
 import sys    
 if __name__=='__main__':
-    cout =  len(sys.argv)
-    if count >0:
-        mode = sys.argv[1].lower()
-        if mode == 'test':
-            TEST_MODE = True
-        else:
-            if mode == 'debug'
-                DEBUG_MODE = True
-            else:
-                DEBUG_MODE = False
-                TEST_MODE = False
-    else:
-        DEBUG_MODE = False
-        TEST_MODE = False
-    
     main()
