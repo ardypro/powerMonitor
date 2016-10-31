@@ -11,7 +11,7 @@ sudo echo "3" > /sys/devices/virtual/misc/gpio/mode/gpio0
 sudo echo "3" > /sys/devices/virtual/misc/gpio/mode/gpio1
 
 cd /
-cd ~/pcduino/powerMonitor
+cd /home/ubuntu/pcduino/powerMonitor
 sudo python pwrmeter.py
 
 cd /

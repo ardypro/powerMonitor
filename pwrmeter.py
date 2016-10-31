@@ -9,15 +9,13 @@
     v1.1    add postDataToLewei()
     v1.2    add reboot system after err counts reaches 5
     v1.3    add log function
-
+	v1.4	delete reboot proc after it reaches several exceptions
 
 
 '''
 
 import minimalmodbus
-#from socket import *
 import time
-#import select
 import requests
 import json
 import os
@@ -25,10 +23,10 @@ import gpio
 import logging
 import logging.config
 
-version_str =   '1.3.1'
+version_str =   '1.4.0'
 
-errCounts   =   0     #err counts, if it reaches 5, then reboot the board
-DEBUG_MODE  =   True     #debug mode
+errCounts   =   0         #err counts, if it reaches 5, then reboot the board
+DEBUG_MODE  =   False     #debug mode
 
 REDPin      =   "gpio7"
 BLUEPin     =   "gpio8"
@@ -41,15 +39,18 @@ lwTrueFlag='{"Successful":true,"Message":"Successful. "}'
 mdErrcounts	=	0	#modbus communication error
 nwErrcounts	=	0	#network communication error
 
+serialPort = '/dev/ttyS1'
+
 def delaySeconds(s):
     time.sleep(s)
 
 def reboot():
-	os.system('sudo reboot')
+	#os.system('sudo reboot')
+	time.sleep(20)
 	
 	
 def clearKwh(slave):
-    pwrMeter=minimalmodbus.Instrument('/dev/ttyS1',slave)
+    pwrMeter=minimalmodbus.Instrument(serialPort,slave)
     pwrMeter.serial.baudrate=4800
     pwrMeter.serial.timeout=5
     pwrMeter.write_registers(12,[0,0])
@@ -80,6 +81,7 @@ def doModbusNormal():
 
 def samplingPower(slave,register):
     '采集电量'
+    
     #if (DEBUG_MODE):
     #   values= test()
     #    return values
@@ -97,7 +99,7 @@ def samplingPower(slave,register):
     global mdErrcounts
 
     try:
-        powerMeter = minimalmodbus.Instrument('/dev/ttyS1',slave)
+        powerMeter = minimalmodbus.Instrument(serialPort,slave)
         powerMeter.serial.baudrate=4800
         powerMeter.serial.timeout=5
 
@@ -178,8 +180,7 @@ def postdata(api,key,header,data):
 		respCode	=	r.status_code
 		respText	=	r.text
 		errCode		=	0
-
-        doNormalPost()
+		doNormalPost()
         #return r.status_code, r.text
 
     except requests.ConnectionError,e:
@@ -216,7 +217,6 @@ def postDataToLewei(v,a,w,kwh,pf,err):
     	doModbusErr()
     	return False
     	
-    	
     lw_api='http://www.lewei50.com/api/v1/gateway/updatesensors/02'
     lw_api_key='2c2a9948d4c049c18560ddbfb46930d8'
     _data='['
@@ -228,28 +228,11 @@ def postDataToLewei(v,a,w,kwh,pf,err):
     _data=_data+'{"Name":"e1","Value":"'+ str(err) +'"}'
     _data=_data+']'
 
-
-
     _headers={'userkey':lw_api_key}
     code,text=postdata(lw_api,lw_api_key,_headers,_data)
+    
     if (DEBUG_MODE):
-		print " "
-		print "==============>>>>>>>>>>>>"
-		print "posting data to ", lw_api
-		print " "
-		print  'Time:    \t', time.asctime( time.localtime(time.time()) )
-		print  '电压:     \t', v
-		print  '电流:     \t', a
-		print  '有功功率:  \t', w
-		print  '电能:     \t', kwh
-		print  '功率因素： \t', pf
-		print " " 
-		print code
-		print text
-		print "=========================="
-		print " " 
-
-    if (DEBUG_MODE):
+        printDebugInfo(v,a,w,kwh,pf,err,-1,-1, lw_api,code,text)
         logging.info('电流: '+ str(a))
 
     if (text == lwTrueFlag): 
@@ -262,7 +245,27 @@ def postDataToLewei(v,a,w,kwh,pf,err):
         return  False
 
 
-
+def printDebugInfo(v,a,w,kwh,pf,err,hi,low, host,code,text):
+	print " "
+	print "==============>>>>>>>>>>>>"
+	print "posting data to ", host
+	print " "
+	print  'Time:     \t', time.asctime( time.localtime(time.time()) )
+	print  '电压:      \t', v
+	print  '电流:      \t', a
+	print  '有功功率:   \t', w
+	print  '电能:      \t', kwh
+	print  '功率因素：  \t', pf
+	print  'hi:       \t', hi
+	print  'low:      \t', low
+	print   ' '
+	print  'response info:'
+	print code
+	print text
+	print "=========================="
+	print " " 
+	
+	
 def postDataToOneNet(v,a,w,kwh,pf,err,hi,low):
     '''发送采集到的数据到onenet.10086.cn'''
     if (v<=0.001):		#采集到的电压为0，由于模块是有被采样电路供电，所以采集到0V电压是错误的
@@ -279,25 +282,7 @@ def postDataToOneNet(v,a,w,kwh,pf,err,hi,low):
     code,text=postdata(hm_api,hm_api_key,_headers,_data)
 	
     if (DEBUG_MODE):
-		print " "
-		print "==============>>>>>>>>>>>>"
-		print "posting data to ", hm_api
-		print " "
-		print  'Time:    \t', time.asctime( time.localtime(time.time()) )
-		print  '电压:     \t', v
-		print  '电流:     \t', a
-		print  '有功功率:  \t', w
-		print  '电能:     \t', kwh
-		print  '功率因素： \t', pf
-		print  'hi:        \t', hi
-		print  'low:       \t', low
-		print " " 
-		print code
-		print text
-		print "=========================="
-		print " " 
-
-    if (DEBUG_MODE):
+        printDebugInfo(v,a,w,kwh,pf,err,hi,low, hm_api,code,text)
         logging.info('电流: '+str(a))
 
     if (text == hmTrueFlag):
@@ -332,11 +317,17 @@ def doNormalPost(t=0.5):
     time.sleep(t)
     gpio.digitalWrite(GREENPin,gpio.HIGH)
 
+
 #================main proc===========================
+
+import sys
+
 def main():
     print '初始化设备...' 
     t0=time.time()
     
+    if len(sys.argv) >=2:
+        DEBUG_MODE = (sys.argv[1].upper() == 'DEBUG')
 
     logging.basicConfig(level=logging.WARNING,
 					format='%(asctime)s %(filename)s[line:%(lineno)d] %(levelname)s %(message)s',
