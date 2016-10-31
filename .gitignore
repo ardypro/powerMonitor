@@ -1,3 +1,4 @@
 *.log
 *.pyc
 /t.py
+/supervise/

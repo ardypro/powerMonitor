@@ -25,12 +25,13 @@ import logging.config
 
 version_str =   '1.4.0'
 
-errCounts   =   0         #err counts, if it reaches 5, then reboot the board
-DEBUG_MODE  =   False     #debug mode
+errCounts   =   0           #err counts, if it reaches 5, then reboot the board
+DEBUG_MODE  =   False       #debug mode
+TEST_MODE   =   False       #test mode
 
-REDPin      =   "gpio7"
-BLUEPin     =   "gpio8"
-GREENPin    =   "gpio9"
+NETWORK_ERR_PIN         =   "gpio7"     #indicates network error
+MODBUS_ERR_PIN          =   "gpio8"     #indicates modbus communication error
+NORMAL_STATE_PIN        =   "gpio9"     #indicates normal state
 
 #判断POST操作成功的标识
 hmTrueFlag = '{"errno":0,"error":"succ"}'
@@ -44,7 +45,7 @@ serialPort = '/dev/ttyS1'
 def delaySeconds(s):
     time.sleep(s)
 
-def reboot():
+def retry():
 	#os.system('sudo reboot')
 	time.sleep(20)
 	
@@ -59,23 +60,23 @@ def clearKwh(slave):
 
 def doNetworkErr():
     doModbusNormal()
-    gpio.digitalWrite(REDPin, gpio.LOW)
+    gpio.digitalWrite(NETWORK_ERR_PIN, gpio.LOW)
 
 
     
 def doNetworkNormal():
-    gpio.digitalWrite(REDPin, gpio.HIGH)
+    gpio.digitalWrite(NETWORK_ERR_PIN, gpio.HIGH)
 
     
 
 def doModbusErr():
     doNetworkNormal()
-    gpio.digitalWrite(BLUEPin, gpio.LOW)
+    gpio.digitalWrite(MODBUS_ERR_PIN, gpio.LOW)
 
 
     
 def doModbusNormal():
-    gpio.digitalWrite(BLUEPin, gpio.HIGH)
+    gpio.digitalWrite(MODBUS_ERR_PIN, gpio.HIGH)
 
     
 
@@ -159,7 +160,7 @@ def samplingPower(slave,register):
 			if ((mdErrcounts>5 ) and (mdErrcounts<10)):
 				delaySeconds(10)
 			if (mdErrcounts>=10):
-				reboot()
+				retry()
 			
     return v,a,w,kwh,pf,err,hi,low
 
@@ -204,7 +205,7 @@ def postdata(api,key,header,data):
 			nwErrcounts =	nwErrcounts + 1
 			if (nwErrcounts >=5):
 				if (nwErrcounts>=10):
-					reboot()				
+					retry()				
 				delaySeconds(5)
 
 					
@@ -302,7 +303,42 @@ def clearKwh(slave):
     pwrMeter.write_registers(12,[0,0])
     
     
+def initSystem():
+    '''
+        sudo modprobe hardwarelib
+        sudo modprobe adc
+        sudo modprobe pwm
+        sudo modprobe gpio
+        sudo modprobe sw_interrupt
+
+        lsmod
+
+        sudo echo "3" > /sys/devices/virtual/misc/gpio/mode/gpio0
+        sudo echo "3" > /sys/devices/virtual/misc/gpio/mode/gpio1
+
+        cd /
+        cd /home/ubuntu/pcduino/powerMonitor	#绝对路径
+        sudo python pwrmeter.py 
+
+        cd /
     
+    
+    '''
+
+    system('sudo modprobe hardwarelib')
+    system('sudo modprobe adc')
+    system('sudo modprobe pwm')
+    system('sudo modprobe gpio')
+    system('sudo modprobe sw_interrupt')
+    system('lsmod')
+    system('sudo echo "3" > /sys/devices/virtual/misc/gpio/mode/gpio0')
+    system('sudo echo "3" > /sys/devices/virtual/misc/gpio/mode/gpio1')
+    #system('cd /')
+    #system('cd /home/ubuntu/pcduino/powerMonitor')
+
+
+
+
 
 #test
 def test():
@@ -320,9 +356,13 @@ def test():
 
 
 def doNormalPost(t=0.5):
-    gpio.digitalWrite(GREENPin,gpio.LOW)
+    gpio.digitalWrite(NORMAL_STATE_PIN,gpio.LOW)
     time.sleep(t)
-    gpio.digitalWrite(GREENPin,gpio.HIGH)
+    gpio.digitalWrite(NORMAL_STATE_PIN,gpio.HIGH)
+
+
+
+
 
 
 #================main proc===========================
@@ -355,9 +395,9 @@ def main():
     logging.warning('测试logging')
     logging.info('创建log文档')
 
-    gpio.pinMode(BLUEPin, gpio.OUTPUT)
-    gpio.pinMode(REDPin, gpio.OUTPUT)
-    gpio.pinMode(GREENPin,gpio.OUTPUT)
+    gpio.pinMode(MODBUS_ERR_PIN, gpio.OUTPUT)
+    gpio.pinMode(NETWORK_ERR_PIN, gpio.OUTPUT)
+    gpio.pinMode(NORMAL_STATE_PIN,gpio.OUTPUT)
      
     doModbusErr()
     doNetworkErr() 
@@ -384,6 +424,21 @@ def main():
  
 
     
-    
+import sys    
 if __name__=='__main__':
+    cout =  len(sys.argv)
+    if count >0:
+        mode = sys.argv[1].lower()
+        if mode == 'test':
+            TEST_MODE = True
+        else:
+            if mode == 'debug'
+                DEBUG_MODE = True
+            else:
+                DEBUG_MODE = False
+                TEST_MODE = False
+    else:
+        DEBUG_MODE = False
+        TEST_MODE = False
+    
     main()
