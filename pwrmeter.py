@@ -9,7 +9,7 @@
     v1.1    add postDataToLewei()
     v1.2    add reboot system after err counts reaches 5
     v1.3    add log function
-	v1.4	delete reboot proc after it reaches several exceptions
+    v1.4    delete reboot proc after it reaches several exceptions
 
 
 '''
@@ -37,8 +37,8 @@ NORMAL_STATE_PIN        =   "gpio9"     #indicates normal state
 hmTrueFlag = '{"errno":0,"error":"succ"}'
 lwTrueFlag='{"Successful":true,"Message":"Successful. "}'
 
-mdErrcounts	=	0	#modbus communication error
-nwErrcounts	=	0	#network communication error
+mdErrcounts    =    0    #modbus communication error
+nwErrcounts    =    0    #network communication error
 
 serialPort = '/dev/ttyS1'
 
@@ -46,10 +46,10 @@ def delaySeconds(s):
     time.sleep(s)
 
 def retry():
-	#os.system('sudo reboot')
-	time.sleep(20)
-	
-	
+    #os.system('sudo reboot')
+    time.sleep(20)
+    
+    
 def clearKwh(slave):
     pwrMeter=minimalmodbus.Instrument(serialPort,slave)
     pwrMeter.serial.baudrate=4800
@@ -150,38 +150,38 @@ def samplingPower(slave,register):
 
         
     finally:
-		if (err==0):
-			doModbusNormal()
-			mdErrcounts	=	0
-			
-		else:
-			doModbusErr()
-			mdErrcounts	=	mdErrcounts + 1
-			if ((mdErrcounts>5 ) and (mdErrcounts<10)):
-				delaySeconds(10)
-			if (mdErrcounts>=10):
-				retry()
-			
+        if (err==0):
+            doModbusNormal()
+            mdErrcounts    =    0
+            
+        else:
+            doModbusErr()
+            mdErrcounts    =    mdErrcounts + 1
+            if ((mdErrcounts>5 ) and (mdErrcounts<10)):
+                delaySeconds(10)
+            if (mdErrcounts>=10):
+                retry()
+            
     return v,a,w,kwh,pf,err,hi,low
 
 
 def postdata(api,key,header,data):
     '''POST数据到指定IOT服务器'''
     
-    global 	errCounts
+    global     errCounts
     global      nwErrcounts
 
-    respCode	=	0
-    respText	=	' '
-    errCode		=	0
+    respCode    =    0
+    respText    =    ' '
+    errCode        =    0
     try:
-		r=requests.post(api,data,headers=header,timeout=15)
-		nwErrcounts	=	0
-		
-		respCode	=	r.status_code
-		respText	=	r.text
-		errCode		=	0
-		doNormalPost()
+        r=requests.post(api,data,headers=header,timeout=15)
+        nwErrcounts    =    0
+        
+        respCode    =    r.status_code
+        respText    =    r.text
+        errCode        =    0
+        doNormalPost()
         #return r.status_code, r.text
 
     except requests.ConnectionError,e:
@@ -189,35 +189,35 @@ def postdata(api,key,header,data):
             print ('网络连接断开，无法发送数据')
             logging.exception('网络连接断开！')
         errCode=1
-		
+        
     except requests.exceptions.ReadTimeout,e:
-    	if (DEBUG_MODE):
-    		print 'time out'
-    		logging.exception('read timed out')
-    	errCode		=	2
-    	
+        if (DEBUG_MODE):
+            print 'time out'
+            logging.exception('read timed out')
+        errCode        =    2
+        
     finally:
-		if (errCode==0):
-			nwErrcounts	=	0
-			doNetworkNormal()
-		else:
-			doNetworkErr()
-			nwErrcounts =	nwErrcounts + 1
-			if (nwErrcounts >=5):
-				if (nwErrcounts>=10):
-					retry()				
-				delaySeconds(5)
+        if (errCode==0):
+            nwErrcounts    =    0
+            doNetworkNormal()
+        else:
+            doNetworkErr()
+            nwErrcounts =    nwErrcounts + 1
+            if (nwErrcounts >=5):
+                if (nwErrcounts>=10):
+                    retry()                
+                delaySeconds(5)
 
-					
-		return respCode, respText
-    		
+                    
+        return respCode, respText
+            
 
 
 def postDataToLewei(v,a,w,kwh,pf,err):
-    if (v<=0.001):		#modbus communication error
-    	doModbusErr()
-    	return False
-    	
+    if (v<=0.001):        #modbus communication error
+        doModbusErr()
+        return False
+        
     lw_api='http://www.lewei50.com/api/v1/gateway/updatesensors/02'
     lw_api_key='2c2a9948d4c049c18560ddbfb46930d8'
     _data='['
@@ -247,32 +247,32 @@ def postDataToLewei(v,a,w,kwh,pf,err):
 
 
 def printDebugInfo(v,a,w,kwh,pf,err,hi,low, host,code,text):
-	print " "
-	print "==============>>>>>>>>>>>>"
-	print "posting data to ", host
-	print " "
-	print  'Time:     \t', time.asctime( time.localtime(time.time()) )
-	print  '电压:      \t', v
-	print  '电流:      \t', a
-	print  '有功功率:   \t', w
-	print  '电能:      \t', kwh
-	print  '功率因素：  \t', pf
-	print  'hi:       \t', hi
-	print  'low:      \t', low
-	print   ' '
-	print  'response info:'
-	print code
-	print text
-	print "=========================="
-	print " " 
-	
-	
+    print " "
+    print "==============>>>>>>>>>>>>"
+    print "posting data to ", host
+    print " "
+    print  'Time:     \t', time.asctime( time.localtime(time.time()) )
+    print  '电压:      \t', v
+    print  '电流:      \t', a
+    print  '有功功率:   \t', w
+    print  '电能:      \t', kwh
+    print  '功率因素：  \t', pf
+    print  'hi:       \t', hi
+    print  'low:      \t', low
+    print   ' '
+    print  'response info:'
+    print code
+    print text
+    print "=========================="
+    print " " 
+    
+    
 def postDataToOneNet(v,a,w,kwh,pf,err,hi,low):
     '''发送采集到的数据到onenet.10086.cn'''
-    if (v<=0.001):		#采集到的电压为0，由于模块是有被采样电路供电，所以采集到0V电压是错误的
-    	doModbusErr()
-    	return False
-    	
+    if (v<=0.001):        #采集到的电压为0，由于模块是有被采样电路供电，所以采集到0V电压是错误的
+        doModbusErr()
+        return False
+        
     hm_api='http://api.heclouds.com/devices/1071322/datapoints?type=3'
     hm_api_key='YPjeEHaQKQA0aholzHpROJI4CCc='
     payload={'Voltage':v, 'Amp':a, 'WATT':w, 'TotalKWh':kwh, 'P_Rate':pf, 'err':err,"hi":hi, "low":low}
@@ -281,7 +281,7 @@ def postDataToOneNet(v,a,w,kwh,pf,err,hi,low):
 
 
     code,text=postdata(hm_api,hm_api_key,_headers,_data)
-	
+    
     if (DEBUG_MODE):
         printDebugInfo(v,a,w,kwh,pf,err,hi,low, hm_api,code,text)
         logging.info('电流: '+str(a))
@@ -293,7 +293,7 @@ def postDataToOneNet(v,a,w,kwh,pf,err,hi,low):
     else:
         if (DEBUG_MODE):
             logging.exception('发送数据到中国移动物联网失败')
-        return False	
+        return False    
 
 
 def clearKwh(slave):
@@ -317,7 +317,7 @@ def initSystem():
         sudo echo "3" > /sys/devices/virtual/misc/gpio/mode/gpio1
 
         cd /
-        cd /home/ubuntu/pcduino/powerMonitor	#绝对路径
+        cd /home/ubuntu/pcduino/powerMonitor    #绝对路径
         sudo python pwrmeter.py 
 
         cd /
@@ -325,16 +325,16 @@ def initSystem():
     
     '''
 
-    system('sudo modprobe hardwarelib')
-    system('sudo modprobe adc')
-    system('sudo modprobe pwm')
-    system('sudo modprobe gpio')
-    system('sudo modprobe sw_interrupt')
-    system('lsmod')
-    system('sudo echo "3" > /sys/devices/virtual/misc/gpio/mode/gpio0')
-    system('sudo echo "3" > /sys/devices/virtual/misc/gpio/mode/gpio1')
-    #system('cd /')
-    #system('cd /home/ubuntu/pcduino/powerMonitor')
+    os.system('sudo modprobe hardwarelib')
+    os.system('sudo modprobe adc')
+    os.system('sudo modprobe pwm')
+    os.system('sudo modprobe gpio')
+    os.system('sudo modprobe sw_interrupt')
+    os.system('lsmod')
+    os.system('sudo echo "3" > /sys/devices/virtual/misc/gpio/mode/gpio0')
+    os.system('sudo echo "3" > /sys/devices/virtual/misc/gpio/mode/gpio1')
+    #os.system('cd /')
+    #os.system('cd /home/ubuntu/pcduino/powerMonitor')
 
 
 
@@ -370,11 +370,11 @@ import sys
 def main():
     '''
         参数：
-            TEST	测试模式，数据由随机数产生器产生
-            DEBUG	调试模式，真实数据，但是同时打印到屏幕
-            RESET	先执行reset()，初始化数据，然后开始数据
+            TEST    测试模式，数据由随机数产生器产生
+            DEBUG    调试模式，真实数据，但是同时打印到屏幕
+            RESET    先执行reset()，初始化数据，然后开始数据
 
-	
+    
     '''
     print '初始化设备...'
     t0=time.time()
@@ -393,13 +393,15 @@ def main():
     else:
         DEBUG_MODE = False
         TEST_MODE = False
+    
+    initSystem()
 
     logging.basicConfig(level=logging.WARNING,
-					format='%(asctime)s %(filename)s[line:%(lineno)d] %(levelname)s %(message)s',
-					datefmt='%a, %d %b %Y %H:%M:%S',
-					filename='/var/log/pwrinfo.log',
-					filemode='w')
-		
+                    format='%(asctime)s %(filename)s[line:%(lineno)d] %(levelname)s %(message)s',
+                    datefmt='%a, %d %b %Y %H:%M:%S',
+                    filename='/var/log/pwrinfo.log',
+                    filemode='w')
+        
     logging.debug('调试模式')
     logging.info('初始化设备...')
     logging.warning('测试logging')
